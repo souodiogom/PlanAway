@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Home</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+  <header class="site-header site-header--blue">
+    <a class="logo" href="index">Plan<span>Away✈</span></a>
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--yellow is-active" href="index">Home</a>
+      <a class="site-nav__link site-nav__link--yellow" href="create-trip">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow" href="itinerary">Itinerário</a>
+      <a class="site-nav__link site-nav__link--yellow" href="budget">Budget</a>
+    </nav>
+    <a class="site-header__profile" href="profile">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--home">
+    <section class="home-hero">
+      <p class="home-hero__eyebrow">Está a planear viajar?</p>
+      <div class="home-trip-grid" id="tripsGrid"></div>
+      <div class="home-hero__actions">
+        <a href="create-trip" class="button button--primary">Criar nova viagem</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

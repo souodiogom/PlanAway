@@ -1,0 +1,37 @@
+.auth-shell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min(92%, 600px);
+  margin: 0 auto;
+}
+
+.auth-card {
+  width: 100%;
+  text-align: center;
+}
+
+.auth-logo {
+  font-size: 48px;
+  margin-bottom: 28px;
+  color: #3a86ff;
+}
+
+.auth-logo span { color: #f2cf3a; }
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.auth-helper {
+  margin-top: 18px;
+  font-size: 14px;
+}
+
+.auth-helper a {
+  color: #3a86ff;
+  font-weight: 700;
+}

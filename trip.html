@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Detalhes da Viagem</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/trip.css" />
+</head>
+<body>
+  <header class="site-header site-header--blue">
+    <a class="logo" href="index.html">Plan<span>Away✈</span></a>
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--yellow" href="index.html">Home</a>
+      <a class="site-nav__link site-nav__link--yellow" href="create-trip.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow" href="itinerary.html">Itinerário</a>
+      <a class="site-nav__link site-nav__link--yellow" href="budget.html">Budget</a>
+    </nav>
+    <a class="site-header__profile" href="profile.html">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--trip">
+    <h1 class="page-title">DETALHES DA VIAGEM</h1>
+
+    <section id="tripSummary" class="trip-summary card card--dark">A carregar viagem...</section>
+
+    <div class="trip-quick-actions">
+      <a class="button button--secondary" id="openActivitiesLink" href="activities.html">Atividades</a>
+      <a class="button button--secondary" id="openBudgetLink" href="budget.html">Budget</a>
+      <a class="button button--secondary" id="openItineraryLink" href="itinerary.html">Itinerário</a>
+      <a class="button button--secondary" id="openExpensesLink" href="expenses.html">Despesas</a>
+    </div>
+
+    <section class="trip-panels">
+      <article class="card card--soft">
+        <h2 class="panel-title">Hotéis</h2>
+        <ul class="bullet-list" id="hotelList">
+          <li>Sem alojamento registado</li>
+        </ul>
+      </article>
+
+      <article class="card card--soft">
+        <h2 class="panel-title">Transportes</h2>
+        <ul class="bullet-list" id="transportList">
+          <li>Sem transporte registado</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/trip.js"></script>
+</body>
+</html>

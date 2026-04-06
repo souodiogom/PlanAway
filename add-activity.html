@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Adicionar Atividade</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+  <header class="site-header site-header--yellow">
+    <a class="logo logo--blue" href="index.html">Plan<span>Away✈</span></a>
+
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--blue" href="index.html">Home</a>
+      <a class="site-nav__link site-nav__link--blue" href="create-trip.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--blue" href="itinerary.html">Itinerário</a>
+      <a class="site-nav__link site-nav__link--blue" href="budget.html">Budget</a>
+    </nav>
+
+    <a class="site-header__profile site-header__profile--dark" href="profile.html">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--form">
+    <h1 id="formTitle" class="page-title">ADICIONAR ATIVIDADE</h1>
+
+    <form id="activityForm" class="app-form card card--form">
+      <div class="app-form__grid">
+        
+        <!-- COLUNA ESQUERDA -->
+        <div class="app-form__column">
+          <label class="form-field" for="activityName">
+            <span class="form-field__label">Nome da atividade</span>
+            <input
+              type="text"
+              id="activityName"
+              name="activityName"
+              placeholder="Museu do Louvre"
+              required
+            />
+          </label>
+
+          <label class="form-field" for="activityType">
+            <span class="form-field__label">Tipo de atividade</span>
+            <select id="activityType" name="activityType" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="Museu">Museu</option>
+              <option value="Monumento">Monumento</option>
+              <option value="Tour">Tour</option>
+              <option value="Restaurante">Restaurante</option>
+              <option value="Compras">Compras</option>
+              <option value="Praia">Praia</option>
+              <option value="Parque">Parque</option>
+              <option value="Vida noturna">Vida noturna</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </label>
+
+          <label class="form-field" for="activityCost">
+            <span class="form-field__label">Custo da atividade</span>
+            <input
+              type="text"
+              id="activityCost"
+              name="activityCost"
+              inputmode="decimal"
+              placeholder="Ex: 25,50"
+              autocomplete="off"
+            />
+          </label>
+        </div>
+
+        <!-- COLUNA DIREITA -->
+        <div class="app-form__column">
+          <label class="form-field" for="activityDate">
+            <span class="form-field__label">Data da atividade</span>
+            <input
+              type="date"
+              id="activityDate"
+              name="activityDate"
+            />
+          </label>
+
+          <label class="form-field" for="activityPeriod">
+            <span class="form-field__label">Período da atividade</span>
+            <select id="activityPeriod" name="activityPeriod" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="Manhã">Manhã</option>
+              <option value="Tarde">Tarde</option>
+              <option value="Noite">Noite</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="button button--primary">Guardar</button>
+        <a id="cancelActivityLink" href="activities.html" class="button button--secondary">Cancelar</a>
+
+        <button
+          type="button"
+          id="deleteActivityButton"
+          class="button button--danger"
+          style="display: none;"
+        >
+          Apagar
+        </button>
+      </div>
+    </form>
+
+    <!-- IMPORTANTE: fora do form -->
+    <div id="successMessage" class="success-message" aria-live="polite"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/add-activity.js"></script>
+</body>
+</html>

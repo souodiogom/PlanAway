@@ -1,0 +1,40 @@
+.page-shell--profile {
+  width: min(92%, 1200px);
+}
+
+.profile-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.profile-avatar {
+  width: 70px;
+  height: 70px;
+  background: #bdbdbd;
+  border-radius: 50%;
+}
+
+.profile-name {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.profile-grid strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 28px;
+}
+
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: 1fr; }
+}

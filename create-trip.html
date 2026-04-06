@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Criar Nova Viagem</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+  <header class="site-header site-header--yellow">
+    <a class="logo logo--blue" href="index.html">Plan<span>Away✈</span></a>
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--blue" href="index">Home</a>
+      <a class="site-nav__link site-nav__link--blue is-active" href="create-trip">Viagens</a>
+      <a class="site-nav__link site-nav__link--blue" href="itinerary">Itinerário</a>
+      <a class="site-nav__link site-nav__link--blue" href="budget">Budget</a>
+    </nav>
+    <a class="site-header__profile site-header__profile--dark" href="profile">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--form">
+    <h1 class="page-title">CRIAR NOVA VIAGEM</h1>
+
+    <form id="tripForm" class="app-form card card--form">
+      <div class="app-form__grid">
+        <div class="app-form__column">
+          <label class="form-field">
+            <span class="form-field__label">Destino da viagem</span>
+            <input type="text" id="destination" placeholder="Paris" required />
+          </label>
+
+          <label class="form-field">
+            <span class="form-field__label">Início da viagem</span>
+            <input type="date" id="startDate" required />
+          </label>
+
+          <label class="form-field">
+            <span class="form-field__label">Fim da viagem</span>
+            <input type="date" id="endDate" required />
+          </label>
+        </div>
+
+        <div class="app-form__column">
+          <label class="form-field">
+            <span class="form-field__label">Budget máximo (€)</span>
+            <input type="number" id="budget" placeholder="500" min="0" required />
+          </label>
+
+          <label class="form-field">
+            <span class="form-field__label">Data de referência</span>
+            <input type="date" id="dayDate" />
+          </label>
+
+          <label class="form-field">
+            <span class="form-field__label">Observações</span>
+            <input type="text" id="notes" placeholder="Ex.: viagem low-cost com amigos" />
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="button button--primary">Guardar</button>
+        <a href="index.html" class="button button--secondary">Cancelar</a>
+      </div>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/create-trip.js"></script>
+</body>
+</html>

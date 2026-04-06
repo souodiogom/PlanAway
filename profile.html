@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Perfil</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+  <header class="site-header site-header--blue">
+    <a class="logo" href="index.html">Plan<span>Away✈</span></a>
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--yellow" href="index.html">Home</a>
+      <a class="site-nav__link site-nav__link--yellow" href="create-trip.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow" href="itinerary.html">Itinerário</a>
+      <a class="site-nav__link site-nav__link--yellow" href="budget.html">Budget</a>
+    </nav>
+    <a class="site-header__profile is-active" href="profile.html">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--profile">
+    <h1 class="page-title">PERFIL</h1>
+
+    <section class="profile-top">
+      <div class="profile-avatar"></div>
+      <div>
+        <h2 class="profile-name">Diogo Martins</h2>
+        <p class="page-subtitle">Utilizador PlanAway</p>
+      </div>
+    </section>
+
+    <section class="profile-grid">
+      <article class="card card--yellow">
+        <p>Viagens criadas</p>
+        <strong id="profileTripsCount">0</strong>
+      </article>
+      <article class="card card--yellow">
+        <p>Atividades</p>
+        <strong id="profileActivitiesCount">0</strong>
+      </article>
+      <article class="card card--yellow">
+        <p>Despesas</p>
+        <strong id="profileExpensesCount">0</strong>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

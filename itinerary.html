@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Itinerário</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/trip.css" />
+</head>
+<body>
+  <header class="site-header site-header--blue">
+    <a class="logo" href="index">Plan<span>Away✈</span></a>
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--yellow" href="index">Home</a>
+      <a class="site-nav__link site-nav__link--yellow" href="trip">Viagem</a>
+      <a class="site-nav__link site-nav__link--yellow is-active" href="itinerary">Itinerário</a>
+      <a class="site-nav__link site-nav__link--yellow" href="budget">Budget</a>
+    </nav>
+    <a class="site-header__profile" href="profile">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--trip">
+    <h1 class="page-title">ITINERÁRIO DA VIAGEM</h1>
+
+    <section class="itinerary-top-grid">
+      <div class="card card--dark" id="itineraryTripBox">A carregar...</div>
+      <div class="card card--dark">
+        <strong>VOO</strong><br />
+        LIS - PARIS 09H29<br />
+        PARIS - LIS 18H45
+      </div>
+    </section>
+
+    <div class="itinerary-days">
+      <div class="itinerary-days__item">DIA 1</div>
+      <div class="itinerary-days__item">DIA 2</div>
+      <div class="itinerary-days__item">DIA 3</div>
+    </div>
+
+    <table class="itinerary-table">
+      <tbody id="itineraryTableBody">
+        <tr>
+          <td>Sem atividades ainda</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/trip.js"></script>
+</body>
+</html>

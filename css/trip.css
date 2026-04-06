@@ -1,0 +1,178 @@
+.page-shell--trip {
+  width: min(92%, 1200px);
+}
+
+.trip-summary {
+  width: min(320px, 100%);
+  margin: 0 auto 24px;
+  text-align: center;
+}
+
+.trip-quick-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.trip-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.trip-record {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.trip-record:last-child {
+  border-bottom: none;
+}
+
+.trip-record__badge {
+  display: inline-block;
+  background: #3a86ff;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 14px;
+  margin-bottom: 8px;
+}
+
+.trip-record__title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.trip-record__meta {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.trip-record__actions {
+  margin-top: 12px;
+}
+
+/* BUDGET */
+.budget-layout-inline {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(180px, 220px);
+  justify-content: center;
+  gap: 36px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+#budgetList {
+  padding: 16px 20px;
+}
+
+.trip-budget-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.trip-budget-row:last-child {
+  border-bottom: none;
+}
+
+#budgetSummary {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trip-budget-summary-box {
+  background: #4d84ff;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 26px 18px;
+  width: 100%;
+  max-width: 180px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.trip-budget-summary-box p {
+  margin: 0;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+/* ITINERARY */
+.itinerary-top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 18px;
+}
+
+.itinerary-days {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.itinerary-days__item {
+  background: #f2cf3a;
+  padding: 10px;
+  font-weight: 700;
+}
+
+.itinerary-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.itinerary-table td,
+.itinerary-table th {
+  border: 1px solid #c8a800;
+  padding: 12px;
+  background: #f2cf3a;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .trip-panels,
+  .itinerary-top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-layout-inline {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 24px;
+  }
+
+  #budgetList,
+  #budgetSummary {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .trip-budget-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .trip-budget-summary-box {
+    max-width: 220px;
+    min-height: 140px;
+  }
+}
