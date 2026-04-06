@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const editIndex = getEditIndexFromURL();
 
   if (!tripId) {
-    window.location.href = 'index';
+    window.location.href = 'index.html';
     return;
   }
 
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteButton = document.getElementById('deleteActivityButton');
 
   if (cancelLink) {
-    cancelLink.href = `activities?id=${tripId}`;
+    cancelLink.href = `activities.html?id=${tripId}`;
   }
 
   if (formTitle && editIndex !== null && !Number.isNaN(editIndex)) {

@@ -11,8 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const budget = Number(document.getElementById('budget').value);
     const notes = document.getElementById('notes').value.trim();
 
+    if (!destination || !startDate || !endDate || !budget) {
+      alert('Preenche todos os campos obrigatórios.');
+      return;
+    }
+
+    if (new Date(endDate) < new Date(startDate)) {
+      alert('A data de fim não pode ser anterior à data de início.');
+      return;
+    }
+
     const trips = getTrips();
-    trips.push({
+
+    const newTrip = {
       id: Date.now(),
       destination,
       startDate,
@@ -24,9 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
       transports: [],
       activities: [],
       expenses: []
-    });
+    };
 
+    trips.push(newTrip);
     saveTrips(trips);
-    window.location.href = 'index.html';
+
+    window.location.href = `trip.html?id=${newTrip.id}`;
   });
 });

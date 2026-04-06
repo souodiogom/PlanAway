@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!tripId) {
     alert('Nenhuma viagem selecionada.');
-    window.location.href = 'index';
+    window.location.href = 'index.html';
     return;
   }
 
@@ -24,27 +24,31 @@ function setupLinks(tripId) {
     if (!href) return;
 
     if (href === 'trip.html' || href === 'trip') {
-      link.href = `trip?id=${tripId}`;
+      link.href = `trip.html?id=${tripId}`;
     }
 
     if (href === 'activities.html' || href === 'activities') {
-      link.href = `activities?id=${tripId}`;
+      link.href = `activities.html?id=${tripId}`;
     }
 
     if (href === 'add-activity.html' || href === 'add-activity') {
-      link.href = `add-activity?id=${tripId}`;
+      link.href = `add-activity.html?id=${tripId}`;
     }
 
     if (href === 'budget.html' || href === 'budget') {
-      link.href = `budget?id=${tripId}`;
+      link.href = `budget.html?id=${tripId}`;
     }
 
     if (href === 'itinerary.html' || href === 'itinerary') {
-      link.href = `itinerary?id=${tripId}`;
+      link.href = `itinerary.html?id=${tripId}`;
+    }
+
+    if (href === 'expenses.html' || href === 'expenses') {
+      link.href = `expenses.html?id=${tripId}`;
     }
 
     if (href === 'index.html' || href === 'index') {
-      link.href = 'index';
+      link.href = 'index.html';
     }
   });
 }
@@ -52,6 +56,7 @@ function setupLinks(tripId) {
 function renderTripSummary(tripId) {
   const trip = getTripById(tripId);
   const summaryTargets = ['tripSummary', 'itineraryTripBox'];
+
   if (!trip) return;
 
   const budget = Number(trip.budget) || 0;
@@ -75,6 +80,7 @@ function renderTripSummary(tripId) {
 function renderActivities(tripId) {
   const trip = getTripById(tripId);
   const list = document.getElementById('activitiesList');
+
   if (!trip || !list) return;
 
   if (!trip.activities || !trip.activities.length) {
@@ -104,13 +110,14 @@ function renderActivities(tripId) {
 }
 
 function editActivity(tripId, index) {
-  window.location.href = `add-activity?id=${tripId}&edit=${index}`;
+  window.location.href = `add-activity.html?id=${tripId}&edit=${index}`;
 }
 
 function renderBudget(tripId) {
   const trip = getTripById(tripId);
   const budgetList = document.getElementById('budgetList');
   const budgetSummary = document.getElementById('budgetSummary');
+
   if (!trip || !budgetList || !budgetSummary) return;
 
   const budget = Number(trip.budget) || 0;
@@ -119,9 +126,18 @@ function renderBudget(tripId) {
   const activitiesCount = trip.activities?.length || 0;
 
   budgetList.innerHTML = `
-    <div class="trip-budget-row"><span>Budget inicial</span><strong>€${budget}</strong></div>
-    <div class="trip-budget-row"><span>Total gasto</span><strong>€${spent}</strong></div>
-    <div class="trip-budget-row"><span>N.º atividades</span><strong>${activitiesCount}</strong></div>
+    <div class="trip-budget-row">
+      <span>Budget inicial</span>
+      <strong>€${budget}</strong>
+    </div>
+    <div class="trip-budget-row">
+      <span>Total gasto</span>
+      <strong>€${spent}</strong>
+    </div>
+    <div class="trip-budget-row">
+      <span>N.º atividades</span>
+      <strong>${activitiesCount}</strong>
+    </div>
   `;
 
   budgetSummary.innerHTML = `
@@ -133,6 +149,7 @@ function renderBudget(tripId) {
 function renderItinerary(tripId) {
   const trip = getTripById(tripId);
   const tableBody = document.getElementById('itineraryTableBody');
+
   if (!trip || !tableBody) return;
 
   if (!trip.activities || !trip.activities.length) {
@@ -151,6 +168,7 @@ function renderItinerary(tripId) {
 
   while (activities.length) {
     const rowActivities = activities.splice(0, 3);
+
     rows.push(`
       <tr>
         <td>${rowActivities[0] ? `${rowActivities[0].name} (€${Number(rowActivities[0].cost) || 0})` : '-'}</td>
@@ -165,9 +183,10 @@ function renderItinerary(tripId) {
 
 function bindActionButtons(tripId) {
   const addActivityButton = document.getElementById('addActivityButton');
+
   if (addActivityButton) {
     addActivityButton.addEventListener('click', () => {
-      window.location.href = `add-activity?id=${tripId}`;
+      window.location.href = `add-activity.html?id=${tripId}`;
     });
   }
 }
