@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showFunnyMessage('🗑️ Atividade apagada. Ficou mais leve essa viagem.');
 
         setTimeout(() => {
-          window.location.href = `activities?id=${tripId}`;
+          window.location.href = `activities.html?id=${tripId}`;
         }, 1200);
       });
     }
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setTimeout(() => {
-      window.location.href = `activities?id=${tripId}`;
+      window.location.href = `activities.html?id=${tripId}`;
     }, 1400);
   });
 

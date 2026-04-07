@@ -84,29 +84,93 @@ function renderActivities(tripId) {
   if (!trip || !list) return;
 
   if (!trip.activities || !trip.activities.length) {
-    list.innerHTML = 'Ainda não existem atividades nesta viagem.';
+    list.innerHTML = `<div class="trip-empty-state">Ainda não existem atividades nesta viagem.</div>`;
     return;
   }
 
-  list.innerHTML = trip.activities.map((activity, index) => `
-    <article class="trip-record">
-      <div class="trip-record__badge">${activity.type || 'Atividade'}</div>
-      <div class="trip-record__title">${activity.name || 'Sem nome'}</div>
-      <div class="trip-record__meta">Período: ${activity.period || '-'}</div>
-      <div class="trip-record__meta">Data: ${activity.date ? formatDate(activity.date) : '-'}</div>
-      <div class="trip-record__meta">Custo: €${Number(activity.cost) || 0}</div>
+  const groupedActivities = {};
 
-      <div class="trip-record__actions">
-        <button
-          type="button"
-          class="button button--secondary"
-          onclick="editActivity('${tripId}', ${index})"
-        >
-          Editar
-        </button>
-      </div>
-    </article>
-  `).join('');
+  trip.activities.forEach((activity, index) => {
+    const dateKey = activity.date || 'sem-data';
+
+    if (!groupedActivities[dateKey]) {
+      groupedActivities[dateKey] = [];
+    }
+
+    groupedActivities[dateKey].push({
+      ...activity,
+      index
+    });
+  });
+
+  const periodOrder = {
+    manhã: 1,
+    tarde: 2,
+    noite: 3
+  };
+
+  const sortedDates = Object.keys(groupedActivities).sort((a, b) => {
+    if (a === 'sem-data') return 1;
+    if (b === 'sem-data') return -1;
+    return new Date(a) - new Date(b);
+  });
+
+  list.innerHTML = sortedDates.map((dateKey, dayIndex) => {
+    const activities = groupedActivities[dateKey]
+      .slice()
+      .sort((a, b) => {
+        const periodA = (a.period || '').trim().toLowerCase();
+        const periodB = (b.period || '').trim().toLowerCase();
+
+        const orderA = periodOrder[periodA] || 99;
+        const orderB = periodOrder[periodB] || 99;
+
+        if (orderA !== orderB) return orderA - orderB;
+
+        return (a.name || '').localeCompare(b.name || '', 'pt');
+      });
+
+    const dayLabel = dateKey === 'sem-data'
+      ? 'Sem data definida'
+      : `DIA ${dayIndex + 1} · ${formatDate(dateKey)}`;
+
+    return `
+      <section class="activity-day-group">
+        <div class="activity-day-group__header">
+          <h3 class="activity-day-group__title">${dayLabel}</h3>
+          <span class="activity-day-group__count">${activities.length} atividade${activities.length > 1 ? 's' : ''}</span>
+        </div>
+
+        <div class="activity-day-group__list">
+          ${activities.map((activity) => `
+            <article class="activity-list-item">
+              <div class="activity-list-item__main">
+                <div class="activity-list-item__top">
+                  <span class="activity-list-item__badge">${activity.type || 'Atividade'}</span>
+                  <h4 class="activity-list-item__title">${activity.name || 'Sem nome'}</h4>
+                </div>
+
+                <div class="activity-list-item__details">
+                  <p><strong>Período:</strong> ${activity.period || '-'}</p>
+                  <p><strong>Custo:</strong> €${Number(activity.cost) || 0}</p>
+                </div>
+              </div>
+
+              <div class="activity-list-item__actions">
+                <button
+                  type="button"
+                  class="button button--secondary"
+                  onclick="editActivity('${tripId}', ${activity.index})"
+                >
+                  Editar
+                </button>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }).join('');
 }
 
 function editActivity(tripId, index) {
