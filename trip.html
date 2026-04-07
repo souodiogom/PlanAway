@@ -21,34 +21,48 @@
     <a class="site-header__profile" href="profile.html">O meu perfil</a>
   </header>
 
-  <main class="page-shell page-shell--trip">
-    <h1 class="page-title">DETALHES DA VIAGEM</h1>
+<main class="page-shell page-shell--trip">
+  <h1 class="page-title">DETALHES DA VIAGEM</h1>
 
-    <section id="tripSummary" class="trip-summary card card--dark">A carregar viagem...</section>
+  <section id="tripSummary" class="trip-summary card card--dark">A carregar viagem...</section>
 
-    <div class="trip-quick-actions">
-      <a class="button button--secondary" id="openActivitiesLink" href="activities.html">Atividades</a>
-      <a class="button button--secondary" id="openBudgetLink" href="budget.html">Budget</a>
-      <a class="button button--secondary" id="openItineraryLink" href="itinerary.html">Itinerário</a>
-      <a class="button button--secondary" id="openExpensesLink" href="expenses.html">Despesas</a>
-    </div>
-
-    <section class="trip-panels">
+  <section class="trip-panels">
+    <div class="trip-panel-block">
       <article class="card card--soft">
         <h2 class="panel-title">Hotéis</h2>
+
         <ul class="bullet-list" id="hotelList">
           <li>Sem alojamento registado</li>
         </ul>
       </article>
 
+      <div class="trip-panel-actions">
+        <a class="button button--primary" id="addHotelLink" href="add-hotel.html">Adicionar</a>
+        <a class="button button--secondary" id="openHotelsLink" href="hotels.html">Editar</a>
+      </div>
+    </div>
+
+    <div class="trip-panel-block">
       <article class="card card--soft">
         <h2 class="panel-title">Transportes</h2>
+
         <ul class="bullet-list" id="transportList">
           <li>Sem transporte registado</li>
         </ul>
       </article>
-    </section>
-  </main>
+
+      <div class="trip-panel-actions">
+        <a class="button button--primary" id="addTransportLink" href="add-transport.html">Adicionar</a>
+        <a class="button button--secondary" id="openTransportsLink" href="transports.html">Editar</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="trip-bottom-actions">
+    <a class="button button--secondary" id="openActivitiesLink" href="activities.html">Gerir atividades</a>
+    <a class="button button--secondary" id="openBudgetLink" href="budget.html">Gerir Budget</a>
+  </div>
+</main>
 
   <footer class="site-footer">
     <div class="site-footer__line"></div>

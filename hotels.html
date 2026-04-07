@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Hotéis</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/trip.css" />
+</head>
+<body>
+  <header class="site-header site-header--blue">
+    <a class="logo" href="index.html">Plan<span>Away✈</span></a>
+
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--yellow" href="index.html">Home</a>
+      <a class="site-nav__link site-nav__link--yellow" href="create-trip.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow" href="itinerary.html">Itinerário</a>
+      <a class="site-nav__link site-nav__link--yellow" href="budget.html">Budget</a>
+    </nav>
+
+    <a class="site-header__profile" href="profile.html">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--trip">
+    <h1 class="page-title">ALOJAMENTOS DA VIAGEM</h1>
+    <p class="page-subtitle">A minha gestão</p>
+
+    <section id="hotelsList" class="card card--soft">
+      A carregar alojamentos...
+    </section>
+
+    <div class="trip-quick-actions">
+      <a class="button button--primary" id="addHotelButton" href="add-hotel.html">Adicionar alojamento</a>
+      <a class="button button--secondary" href="trip.html">Voltar</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/trip.js"></script>
+</body>
+</html>

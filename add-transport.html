@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Adicionar Transporte</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+  <header class="site-header site-header--yellow">
+    <a class="logo logo--blue" href="index.html">Plan<span>Away✈</span></a>
+
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--blue" href="index.html">Home</a>
+      <a class="site-nav__link site-nav__link--blue" href="create-trip.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--blue" href="itinerary.html">Itinerário</a>
+      <a class="site-nav__link site-nav__link--blue" href="budget.html">Budget</a>
+    </nav>
+
+    <a class="site-header__profile site-header__profile--dark" href="profile.html">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--form">
+    <h1 id="transportFormTitle" class="page-title">ADICIONAR TRANSPORTE</h1>
+
+    <form id="transportForm" class="app-form card card--form">
+      <div class="app-form__grid">
+        <div class="app-form__column">
+          <label class="form-field" for="transportType">
+            <span class="form-field__label">Tipo de transporte</span>
+            <select id="transportType" name="transportType" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="Avião">Avião</option>
+              <option value="Comboio">Comboio</option>
+              <option value="Metro">Metro</option>
+              <option value="Autocarro">Autocarro</option>
+              <option value="Táxi">Táxi</option>
+              <option value="Uber">Uber</option>
+              <option value="Barco">Barco</option>
+              <option value="Carro">Carro</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </label>
+
+          <label class="form-field" for="transportDate">
+            <span class="form-field__label">Data do transporte</span>
+            <input
+              type="date"
+              id="transportDate"
+              name="transportDate"
+              required
+            />
+          </label>
+        </div>
+
+        <div class="app-form__column">
+          <label class="form-field" for="transportPeriod">
+            <span class="form-field__label">Período do transporte</span>
+            <select id="transportPeriod" name="transportPeriod" required>
+              <option value="" selected disabled>Selecionar</option>
+              <option value="Manhã">Manhã</option>
+              <option value="Tarde">Tarde</option>
+              <option value="Noite">Noite</option>
+            </select>
+          </label>
+
+          <label class="form-field" for="transportPrice">
+            <span class="form-field__label">Valor</span>
+            <input
+              type="text"
+              id="transportPrice"
+              name="transportPrice"
+              inputmode="decimal"
+              placeholder="Ex: 40,00"
+              autocomplete="off"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="button button--primary">Guardar</button>
+        <a id="cancelTransportLink" href="transports.html" class="button button--secondary">Cancelar</a>
+
+        <button
+          type="button"
+          id="deleteTransportButton"
+          class="button button--danger"
+          style="display: none;"
+        >
+          Apagar
+        </button>
+      </div>
+    </form>
+
+    <div id="transportSuccessMessage" class="success-message" aria-live="polite"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/add-transport.js"></script>
+</body>
+</html>

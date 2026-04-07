@@ -20,6 +20,26 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  align-items: start;
+}
+
+.trip-panel-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trip-bottom-actions {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.trip-bottom-actions .button {
+  min-width: 170px;
+  border-radius: 999px;
 }
 
 .trip-record {
@@ -348,5 +368,17 @@
 
   .activity-list-item__actions .button {
     width: 100%;
+  }
+
+    .trip-panel-actions,
+  .trip-bottom-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .trip-panel-actions .button,
+  .trip-bottom-actions .button {
+    width: 100%;
+    max-width: 260px;
   }
 }

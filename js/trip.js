@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupLinks(tripId);
   renderTripSummary(tripId);
+  renderHotels(tripId);
+  renderHotelsPage(tripId);
+  renderTransports(tripId);
+  renderTransportsPage(tripId);
   renderActivities(tripId);
   renderBudget(tripId);
   renderItinerary(tripId);
@@ -25,6 +29,22 @@ function setupLinks(tripId) {
 
     if (href === 'trip.html' || href === 'trip') {
       link.href = `trip.html?id=${tripId}`;
+    }
+
+    if (href === 'hotels.html' || href === 'hotels') {
+      link.href = `hotels.html?id=${tripId}`;
+    }
+
+    if (href === 'add-hotel.html' || href === 'add-hotel') {
+      link.href = `add-hotel.html?id=${tripId}`;
+    }
+
+    if (href === 'transports.html' || href === 'transports') {
+      link.href = `transports.html?id=${tripId}`;
+    }
+
+    if (href === 'add-transport.html' || href === 'add-transport') {
+      link.href = `add-transport.html?id=${tripId}`;
     }
 
     if (href === 'activities.html' || href === 'activities') {
@@ -75,6 +95,259 @@ function renderTripSummary(tripId) {
       Restante: €${remaining}
     `;
   });
+}
+
+function renderHotels(tripId) {
+  const trip = getTripById(tripId);
+  const hotelList = document.getElementById('hotelList');
+
+  if (!trip || !hotelList) return;
+
+  if (!trip.hotels || !trip.hotels.length) {
+    hotelList.innerHTML = `<li>Sem alojamento registado</li>`;
+    return;
+  }
+
+  hotelList.innerHTML = trip.hotels
+    .slice()
+    .sort((a, b) => new Date(a.date || '9999-12-31') - new Date(b.date || '9999-12-31'))
+    .map((hotel) => `
+      <li>
+        <strong>${hotel.name || 'Alojamento sem nome'}</strong>
+        ${hotel.date ? ` — ${formatDate(hotel.date)}` : ''}
+        ${hotel.nights ? ` — ${hotel.nights} noite${Number(hotel.nights) > 1 ? 's' : ''}` : ''}
+      </li>
+    `)
+    .join('');
+}
+
+function renderHotelsPage(tripId) {
+  const trip = getTripById(tripId);
+  const list = document.getElementById('hotelsList');
+
+  if (!trip || !list) return;
+
+  if (!trip.hotels || !trip.hotels.length) {
+    list.innerHTML = `<div class="trip-empty-state">Ainda não existem alojamentos nesta viagem.</div>`;
+    return;
+  }
+
+  const groupedHotels = {};
+
+  trip.hotels.forEach((hotel, index) => {
+    const dateKey = hotel.date || 'sem-data';
+
+    if (!groupedHotels[dateKey]) {
+      groupedHotels[dateKey] = [];
+    }
+
+    groupedHotels[dateKey].push({
+      ...hotel,
+      index
+    });
+  });
+
+  const sortedDates = Object.keys(groupedHotels).sort((a, b) => {
+    if (a === 'sem-data') return 1;
+    if (b === 'sem-data') return -1;
+    return new Date(a) - new Date(b);
+  });
+
+  list.innerHTML = sortedDates.map((dateKey, dayIndex) => {
+    const hotels = groupedHotels[dateKey];
+    const dayLabel = dateKey === 'sem-data'
+      ? 'Sem data definida'
+      : `DIA ${dayIndex + 1} · ${formatDate(dateKey)}`;
+
+    return `
+      <section class="activity-day-group">
+        <div class="activity-day-group__header">
+          <h3 class="activity-day-group__title">${dayLabel}</h3>
+          <span class="activity-day-group__count">${hotels.length} alojamento${hotels.length > 1 ? 's' : ''}</span>
+        </div>
+
+        <div class="activity-day-group__list">
+          ${hotels.map((hotel) => `
+            <article class="activity-list-item">
+              <div class="activity-list-item__main">
+                <div class="activity-list-item__top">
+                  <span class="activity-list-item__badge">Hotel</span>
+                  <h4 class="activity-list-item__title">${hotel.name || 'Alojamento sem nome'}</h4>
+                </div>
+
+                <div class="activity-list-item__details">
+                  <p><strong>Noites:</strong> ${hotel.nights || 0}</p>
+                  <p><strong>Valor:</strong> €${Number(hotel.price) || 0}</p>
+                </div>
+              </div>
+
+              <div class="activity-list-item__actions">
+                <button
+                  type="button"
+                  class="button button--secondary"
+                  onclick="editHotel('${tripId}', ${hotel.index})"
+                >
+                  Editar
+                </button>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }).join('');
+}
+
+function editHotel(tripId, index) {
+  window.location.href = `add-hotel.html?id=${tripId}&edit=${index}`;
+}
+
+function renderTransports(tripId) {
+  const trip = getTripById(tripId);
+  const transportList = document.getElementById('transportList');
+
+  if (!trip || !transportList) return;
+
+  if (!trip.transports || !trip.transports.length) {
+    transportList.innerHTML = `<li>Sem transporte registado</li>`;
+    return;
+  }
+
+  transportList.innerHTML = trip.transports
+    .slice()
+    .sort((a, b) => new Date(a.date || '9999-12-31') - new Date(b.date || '9999-12-31'))
+    .map((transport) => `
+      <li>
+        <strong>${transport.type || 'Transporte'}</strong>
+        ${transport.date ? ` — ${formatDate(transport.date)}` : ''}
+        ${transport.period ? ` — ${transport.period}` : ''}
+      </li>
+    `)
+    .join('');
+}
+
+function renderTransports(tripId) {
+  const trip = getTripById(tripId);
+  const transportList = document.getElementById('transportList');
+
+  if (!trip || !transportList) return;
+
+  if (!trip.transports || !trip.transports.length) {
+    transportList.innerHTML = `<li>Sem transporte registado</li>`;
+    return;
+  }
+
+  transportList.innerHTML = trip.transports
+    .slice()
+    .sort((a, b) => new Date(a.date || '9999-12-31') - new Date(b.date || '9999-12-31'))
+    .map((transport) => `
+      <li>
+        <strong>${transport.type || 'Transporte'}</strong>
+        ${transport.date ? ` — ${formatDate(transport.date)}` : ''}
+        ${transport.period ? ` — ${transport.period}` : ''}
+      </li>
+    `)
+    .join('');
+}
+
+function renderTransportsPage(tripId) {
+  const trip = getTripById(tripId);
+  const list = document.getElementById('transportsList');
+
+  if (!trip || !list) return;
+
+  if (!trip.transports || !trip.transports.length) {
+    list.innerHTML = `<div class="trip-empty-state">Ainda não existem transportes nesta viagem.</div>`;
+    return;
+  }
+
+  const groupedTransports = {};
+
+  trip.transports.forEach((transport, index) => {
+    const dateKey = transport.date || 'sem-data';
+
+    if (!groupedTransports[dateKey]) {
+      groupedTransports[dateKey] = [];
+    }
+
+    groupedTransports[dateKey].push({
+      ...transport,
+      index
+    });
+  });
+
+  const periodOrder = {
+    manhã: 1,
+    tarde: 2,
+    noite: 3
+  };
+
+  const sortedDates = Object.keys(groupedTransports).sort((a, b) => {
+    if (a === 'sem-data') return 1;
+    if (b === 'sem-data') return -1;
+    return new Date(a) - new Date(b);
+  });
+
+  list.innerHTML = sortedDates.map((dateKey, dayIndex) => {
+    const transports = groupedTransports[dateKey]
+      .slice()
+      .sort((a, b) => {
+        const periodA = (a.period || '').trim().toLowerCase();
+        const periodB = (b.period || '').trim().toLowerCase();
+
+        const orderA = periodOrder[periodA] || 99;
+        const orderB = periodOrder[periodB] || 99;
+
+        if (orderA !== orderB) return orderA - orderB;
+
+        return (a.type || '').localeCompare(b.type || '', 'pt');
+      });
+
+    const dayLabel = dateKey === 'sem-data'
+      ? 'Sem data definida'
+      : `DIA ${dayIndex + 1} · ${formatDate(dateKey)}`;
+
+    return `
+      <section class="activity-day-group">
+        <div class="activity-day-group__header">
+          <h3 class="activity-day-group__title">${dayLabel}</h3>
+          <span class="activity-day-group__count">${transports.length} transporte${transports.length > 1 ? 's' : ''}</span>
+        </div>
+
+        <div class="activity-day-group__list">
+          ${transports.map((transport) => `
+            <article class="activity-list-item">
+              <div class="activity-list-item__main">
+                <div class="activity-list-item__top">
+                  <span class="activity-list-item__badge">${transport.type || 'Transporte'}</span>
+                  <h4 class="activity-list-item__title">${transport.type || 'Transporte sem tipo'}</h4>
+                </div>
+
+                <div class="activity-list-item__details">
+                  <p><strong>Período:</strong> ${transport.period || '-'}</p>
+                  <p><strong>Valor:</strong> €${Number(transport.price) || 0}</p>
+                </div>
+              </div>
+
+              <div class="activity-list-item__actions">
+                <button
+                  type="button"
+                  class="button button--secondary"
+                  onclick="editTransport('${tripId}', ${transport.index})"
+                >
+                  Editar
+                </button>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }).join('');
+}
+
+function editTransport(tripId, index) {
+  window.location.href = `add-transport.html?id=${tripId}&edit=${index}`;
 }
 
 function renderActivities(tripId) {

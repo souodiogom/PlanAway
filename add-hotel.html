@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanAway - Adicionar Alojamento</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+  <header class="site-header site-header--yellow">
+    <a class="logo logo--blue" href="index.html">Plan<span>Away✈</span></a>
+
+    <nav class="site-nav">
+      <a class="site-nav__link site-nav__link--blue" href="index.html">Home</a>
+      <a class="site-nav__link site-nav__link--blue" href="create-trip.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--blue" href="itinerary.html">Itinerário</a>
+      <a class="site-nav__link site-nav__link--blue" href="budget.html">Budget</a>
+    </nav>
+
+    <a class="site-header__profile site-header__profile--dark" href="profile.html">O meu perfil</a>
+  </header>
+
+  <main class="page-shell page-shell--form">
+    <h1 id="hotelFormTitle" class="page-title">ADICIONAR ALOJAMENTO</h1>
+
+    <form id="hotelForm" class="app-form card card--form">
+      <div class="app-form__grid">
+        <div class="app-form__column">
+          <label class="form-field" for="hotelName">
+            <span class="form-field__label">Nome do alojamento</span>
+            <input
+              type="text"
+              id="hotelName"
+              name="hotelName"
+              placeholder="Hotel Example"
+              required
+            />
+          </label>
+
+          <label class="form-field" for="hotelDate">
+            <span class="form-field__label">Data/noite do alojamento</span>
+            <input
+              type="date"
+              id="hotelDate"
+              name="hotelDate"
+              required
+            />
+          </label>
+        </div>
+
+        <div class="app-form__column">
+          <label class="form-field" for="hotelNights">
+            <span class="form-field__label">Número de noites no alojamento</span>
+            <input
+              type="number"
+              id="hotelNights"
+              name="hotelNights"
+              min="1"
+              placeholder="Ex: 3"
+              required
+            />
+          </label>
+
+          <label class="form-field" for="hotelPrice">
+            <span class="form-field__label">Valor</span>
+            <input
+              type="text"
+              id="hotelPrice"
+              name="hotelPrice"
+              inputmode="decimal"
+              placeholder="Ex: 120,00"
+              autocomplete="off"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="button button--primary">Guardar</button>
+        <a id="cancelHotelLink" href="hotels.html" class="button button--secondary">Cancelar</a>
+
+        <button
+          type="button"
+          id="deleteHotelButton"
+          class="button button--danger"
+          style="display: none;"
+        >
+          Apagar
+        </button>
+      </div>
+    </form>
+
+    <div id="hotelSuccessMessage" class="success-message" aria-live="polite"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__line"></div>
+    <div class="site-footer__pill">FOOTER</div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/add-hotel.js"></script>
+</body>
+</html>
