@@ -463,24 +463,17 @@ function renderBudget(tripId) {
 function renderItinerary(tripId) {
   const trip = getTripById(tripId);
   const grid = document.getElementById('itineraryGrid');
-  const transportBox = document.getElementById('itineraryTransportBox');
-  const hotelBox = document.getElementById('itineraryHotelBox');
+  const flightBox = document.getElementById('itineraryFlightBox');
 
   if (!trip || !grid) return;
 
-  if (transportBox) {
-    transportBox.style.display = 'none';
-  }
-
-  if (hotelBox) {
-    hotelBox.style.display = 'none';
-  }
+  renderItineraryFlightBox(trip, flightBox);
 
   const days = getTripDateRange(trip.startDate, trip.endDate);
   const periods = ['alojamento', 'manhã', 'tarde', 'noite'];
 
   grid.innerHTML = '';
-  grid.style.gridTemplateColumns = `140px repeat(${days.length}, 200px)`;
+  grid.style.gridTemplateColumns = `160px repeat(${days.length}, 230px)`;
 
   grid.appendChild(createItineraryGridCell('', 'it-cell'));
 
@@ -639,4 +632,39 @@ function bindTripMainActions(tripId) {
       window.location.href = 'index.html';
     });
   }
+}
+
+function renderItineraryFlightBox(trip, box) {
+  if (!box) return;
+
+  const transports = (trip.transports || []).slice().sort((a, b) => {
+    return new Date(a.date || '9999-12-31') - new Date(b.date || '9999-12-31');
+  });
+
+  if (!transports.length) {
+    box.innerHTML = `
+      <strong>VOO</strong><br>
+      Sem transporte registado
+    `;
+    return;
+  }
+
+  const flightKeywords = ['avião', 'aviao', 'voo', 'flight', 'plane'];
+  const flightTransports = transports.filter((transport) => {
+    const type = (transport.type || '').trim().toLowerCase();
+    return flightKeywords.some((keyword) => type.includes(keyword));
+  });
+
+  const itemsToShow = flightTransports.length ? flightTransports : transports.slice(0, 2);
+
+  box.innerHTML = `
+    <strong>VOO</strong><br>
+    ${itemsToShow.map((transport) => {
+      const type = transport.type || 'Transporte';
+      const date = transport.date ? formatDate(transport.date) : 'Sem data';
+      const period = transport.period || '-';
+
+      return `${type} — ${date} ${period}`;
+    }).join('<br>')}
+  `;
 }

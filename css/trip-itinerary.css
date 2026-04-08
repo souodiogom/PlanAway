@@ -11,26 +11,28 @@
   font-weight: 800;
   color: #13233d;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .itinerary-top-grid {
   width: min(100%, 1040px);
-  margin: 0 auto 22px;
+  margin: 0 auto 30px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 34px;
-  align-items: stretch;
+  gap: 40px;
+  align-items: center;
 }
 
 .itinerary-info-card {
-  min-height: 145px;
-  border-radius: 8px;
-  padding: 22px 20px;
+  min-height: 150px;
+  border-radius: 10px;
+  padding: 24px 22px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  font-size: 17px;
-  line-height: 1.35;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .itinerary-info-card strong {
@@ -76,31 +78,17 @@
   min-height: 60px;
 }
 
-@media (max-width: 900px) {
-  .itinerary-top-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .itinerary-board {
-    overflow-x: auto;
-  }
-
-  .itinerary-days,
-  .itinerary-table {
-    min-width: 720px;
-  }
-}
-
 .itinerary-grid-wrap {
+  display: flex;
+  justify-content: center;
   width: 100%;
-  overflow-x: auto;
   margin-top: 18px;
+  overflow-x: auto;
 }
 
 .itinerary-grid-dynamic {
-  display: grid;
-  min-width: max-content;
+  display: inline-grid;
+  width: auto;
   border: 1px solid #c8a800;
 }
 
@@ -156,4 +144,24 @@
 .it-entry--transport {
   font-weight: 600;
   color: #1f2937;
+}
+
+@media (max-width: 900px) {
+  .itinerary-top-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .itinerary-board {
+    overflow-x: auto;
+  }
+
+  .itinerary-days,
+  .itinerary-table {
+    min-width: 720px;
+  }
+
+  #itineraryTripBox {
+    max-width: 100%;
+  }
 }
