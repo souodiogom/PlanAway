@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const tripId = getTripIdFromURL();
   const editIndex = getTransportEditIndexFromURL();
+  const trip = getTripById(tripId);
 
   if (!tripId) {
     window.location.href = 'index.html';
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const successMessage = document.getElementById('transportSuccessMessage');
   const priceInput = document.getElementById('transportPrice');
   const deleteButton = document.getElementById('deleteTransportButton');
+  const transportDateInput = document.getElementById('transportDate');
 
   if (cancelLink) {
     cancelLink.href = `transports.html?id=${tripId}`;
@@ -23,6 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (!transportForm) return;
+
+  if (trip && transportDateInput) {
+    transportDateInput.min = trip.startDate;
+    transportDateInput.max = trip.endDate;
+  }
 
   if (priceInput) {
     priceInput.addEventListener('input', () => {
@@ -94,6 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!type || !date || !period) {
       showTransportMessage('Ei viajante 😅 ainda faltam alguns campos obrigatórios.');
+      return;
+    }
+
+    if (trip && (date < trip.startDate || date > trip.endDate)) {
+      showTransportMessage('A data do transporte tem de estar dentro das datas da viagem.');
       return;
     }
 

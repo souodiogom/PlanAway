@@ -227,30 +227,6 @@ function renderTransports(tripId) {
     .join('');
 }
 
-function renderTransports(tripId) {
-  const trip = getTripById(tripId);
-  const transportList = document.getElementById('transportList');
-
-  if (!trip || !transportList) return;
-
-  if (!trip.transports || !trip.transports.length) {
-    transportList.innerHTML = `<li>Sem transporte registado</li>`;
-    return;
-  }
-
-  transportList.innerHTML = trip.transports
-    .slice()
-    .sort((a, b) => new Date(a.date || '9999-12-31') - new Date(b.date || '9999-12-31'))
-    .map((transport) => `
-      <li>
-        <strong>${transport.type || 'Transporte'}</strong>
-        ${transport.date ? ` — ${formatDate(transport.date)}` : ''}
-        ${transport.period ? ` — ${transport.period}` : ''}
-      </li>
-    `)
-    .join('');
-}
-
 function renderTransportsPage(tripId) {
   const trip = getTripById(tripId);
   const list = document.getElementById('transportsList');
@@ -486,37 +462,151 @@ function renderBudget(tripId) {
 
 function renderItinerary(tripId) {
   const trip = getTripById(tripId);
-  const tableBody = document.getElementById('itineraryTableBody');
+  const grid = document.getElementById('itineraryGrid');
+  const transportBox = document.getElementById('itineraryTransportBox');
+  const hotelBox = document.getElementById('itineraryHotelBox');
 
-  if (!trip || !tableBody) return;
+  if (!trip || !grid) return;
 
-  if (!trip.activities || !trip.activities.length) {
-    tableBody.innerHTML = `
-      <tr>
-        <td>Sem atividades ainda</td>
-        <td>-</td>
-        <td>-</td>
-      </tr>
-    `;
-    return;
+  if (transportBox) {
+    transportBox.style.display = 'none';
   }
 
-  const rows = [];
-  const activities = [...trip.activities];
-
-  while (activities.length) {
-    const rowActivities = activities.splice(0, 3);
-
-    rows.push(`
-      <tr>
-        <td>${rowActivities[0] ? `${rowActivities[0].name} (€${Number(rowActivities[0].cost) || 0})` : '-'}</td>
-        <td>${rowActivities[1] ? `${rowActivities[1].name} (€${Number(rowActivities[1].cost) || 0})` : '-'}</td>
-        <td>${rowActivities[2] ? `${rowActivities[2].name} (€${Number(rowActivities[2].cost) || 0})` : '-'}</td>
-      </tr>
-    `);
+  if (hotelBox) {
+    hotelBox.style.display = 'none';
   }
 
-  tableBody.innerHTML = rows.join('');
+  const days = getTripDateRange(trip.startDate, trip.endDate);
+  const periods = ['alojamento', 'manhã', 'tarde', 'noite'];
+
+  grid.innerHTML = '';
+  grid.style.gridTemplateColumns = `140px repeat(${days.length}, 200px)`;
+
+  grid.appendChild(createItineraryGridCell('', 'it-cell'));
+
+  days.forEach((date, index) => {
+    grid.appendChild(
+      createItineraryGridCell(
+        `DIA ${index + 1}<span>${formatDate(date)}</span>`,
+        'it-cell it-cell--day'
+      )
+    );
+  });
+
+  periods.forEach((period) => {
+    grid.appendChild(
+      createItineraryGridCell(
+        period === 'alojamento' ? 'ALOJAMENTO' : period.toUpperCase(),
+        'it-cell it-cell--period'
+      )
+    );
+
+    days.forEach((date) => {
+      const cell = document.createElement('div');
+      cell.className = 'it-cell it-cell--content';
+
+      let entries = [];
+
+      if (period === 'alojamento') {
+        const hotelsForDay = (trip.hotels || []).filter((hotel) =>
+          isHotelActiveOnDate(hotel, date)
+        );
+
+        entries = hotelsForDay.map((hotel) => `
+          <div class="it-entry it-entry--hotel">
+            🏨 ${hotel.name || 'Alojamento sem nome'}
+          </div>
+        `);
+      } else {
+        const dayActivities = (trip.activities || [])
+          .filter((activity) => {
+            return (
+              activity.date === date &&
+              (activity.period || '').trim().toLowerCase() === period
+            );
+          })
+          .map((activity) => `
+            <div class="it-entry">
+              ${activity.name || 'Sem nome'} (€${Number(activity.cost) || 0})
+            </div>
+          `);
+
+        const dayTransports = (trip.transports || [])
+          .filter((transport) => {
+            return (
+              transport.date === date &&
+              (transport.period || '').trim().toLowerCase() === period
+            );
+          })
+          .map((transport) => `
+            <div class="it-entry it-entry--transport">
+              🚕 ${transport.type || 'Transporte'}
+            </div>
+          `);
+
+        entries = [...dayTransports, ...dayActivities];
+      }
+
+      if (!entries.length) {
+        cell.innerHTML = `<span class="it-empty">-</span>`;
+      } else {
+        cell.innerHTML = entries.join('');
+      }
+
+      grid.appendChild(cell);
+    });
+  });
+}
+
+function isHotelActiveOnDate(hotel, date) {
+  if (!hotel || !hotel.date) return false;
+
+  const start = new Date(hotel.date);
+  start.setHours(0, 0, 0, 0);
+
+  const nights = Math.max(Number(hotel.nights) || 1, 1);
+
+  const end = new Date(start);
+  end.setDate(end.getDate() + nights - 1);
+  end.setHours(0, 0, 0, 0);
+
+  const current = new Date(date);
+  current.setHours(0, 0, 0, 0);
+
+  return current >= start && current <= end;
+}
+
+function getTripDateRange(startDate, endDate) {
+  if (!startDate || !endDate) return [];
+
+  const result = [];
+  const current = new Date(startDate);
+  const end = new Date(endDate);
+
+  current.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+
+  while (current <= end) {
+    result.push(formatDateISO(current));
+    current.setDate(current.getDate() + 1);
+  }
+
+  return result;
+}
+
+function formatDateISO(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+function createItineraryGridCell(content, className) {
+  const div = document.createElement('div');
+  div.className = className;
+  div.innerHTML = content;
+  return div;
 }
 
 function bindActionButtons(tripId) {

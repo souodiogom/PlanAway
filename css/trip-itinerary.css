@@ -1,37 +1,159 @@
+.page-shell--itinerary {
+  width: min(88%, 1180px);
+  margin: 0 auto;
+  padding-top: 46px;
+}
+
+.page-title--itinerary {
+  width: min(100%, 1040px);
+  margin: 0 auto 28px;
+  font-size: 28px;
+  font-weight: 800;
+  color: #13233d;
+  text-transform: uppercase;
+}
+
 .itinerary-top-grid {
+  width: min(100%, 1040px);
+  margin: 0 auto 22px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 18px;
+  gap: 34px;
+  align-items: stretch;
+}
+
+.itinerary-info-card {
+  min-height: 145px;
+  border-radius: 8px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.itinerary-info-card strong {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.itinerary-board {
+  width: min(100%, 1040px);
+  margin: 0 auto;
 }
 
 .itinerary-days {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  gap: 8px;
 }
 
 .itinerary-days__item {
-  background: #f2cf3a;
-  padding: 10px;
-  font-weight: 700;
+  background: #efcc33;
+  border: 1px solid #d1b01b;
+  border-bottom: none;
+  padding: 14px 12px 12px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #111827;
+  text-transform: uppercase;
 }
 
 .itinerary-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.itinerary-table td,
-.itinerary-table th {
-  border: 1px solid #c8a800;
-  padding: 12px;
-  background: #f2cf3a;
-  font-size: 14px;
+.itinerary-table td {
+  border: 1px solid #d1b01b;
+  background: #efcc33;
+  padding: 16px 14px;
+  font-size: 15px;
+  color: #111827;
+  vertical-align: top;
+  min-height: 60px;
 }
 
 @media (max-width: 900px) {
   .itinerary-top-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
+
+  .itinerary-board {
+    overflow-x: auto;
+  }
+
+  .itinerary-days,
+  .itinerary-table {
+    min-width: 720px;
+  }
+}
+
+.itinerary-grid-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 18px;
+}
+
+.itinerary-grid-dynamic {
+  display: grid;
+  min-width: max-content;
+  border: 1px solid #c8a800;
+}
+
+.itinerary-grid-dynamic .it-cell {
+  background: #f2cf3a;
+  border-right: 1px solid #c8a800;
+  border-bottom: 1px solid #c8a800;
+  padding: 12px;
+  font-size: 14px;
+  min-height: 72px;
+}
+
+.itinerary-grid-dynamic .it-cell--day {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.itinerary-grid-dynamic .it-cell--day span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.itinerary-grid-dynamic .it-cell--period {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.itinerary-grid-dynamic .it-cell--content {
+  min-width: 180px;
+}
+
+.itinerary-grid-dynamic .it-entry {
+  margin-bottom: 8px;
+}
+
+.itinerary-grid-dynamic .it-entry:last-child {
+  margin-bottom: 0;
+}
+
+.itinerary-grid-dynamic .it-empty {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.it-entry--hotel {
+  font-weight: 600;
+}
+
+.it-entry--transport {
+  font-weight: 600;
+  color: #1f2937;
 }

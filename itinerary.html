@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/trip.css" />
-  <link rel="stylesheet" href="css/trip.css" />
   <link rel="stylesheet" href="css/trip-budget.css" />
   <link rel="stylesheet" href="css/trip-itinerary.css" />
   <link rel="stylesheet" href="css/trip-activities.css" />
@@ -18,12 +17,12 @@
   <header class="site-header site-header--blue">
     <a class="logo" href="index.html">Plan<span>Away✈</span></a>
     <nav class="site-nav">
-      <a class="site-nav__link site-nav__link--yellow" href="index">Home</a>
-      <a class="site-nav__link site-nav__link--yellow" href="trip">Viagem</a>
-      <a class="site-nav__link site-nav__link--yellow is-active" href="itinerary">Itinerário</a>
-      <a class="site-nav__link site-nav__link--yellow" href="budget">Budget</a>
+      <a class="site-nav__link site-nav__link--yellow" href="index.html">Home</a>
+      <a class="site-nav__link site-nav__link--yellow" href="trip.html">Viagem</a>
+      <a class="site-nav__link site-nav__link--yellow is-active" href="itinerary.html">Itinerário</a>
+      <a class="site-nav__link site-nav__link--yellow" href="budget.html">Budget</a>
     </nav>
-    <a class="site-header__profile" href="profile">O meu perfil</a>
+    <a class="site-header__profile" href="profile.html">O meu perfil</a>
   </header>
 
   <main class="page-shell page-shell--trip">
@@ -31,28 +30,13 @@
 
     <section class="itinerary-top-grid">
       <div class="card card--dark" id="itineraryTripBox">A carregar...</div>
-      <div class="card card--dark">
-        <strong>VOO</strong><br />
-        LIS - PARIS 09H29<br />
-        PARIS - LIS 18H45
-      </div>
+      <div class="card card--dark" id="itineraryTransportBox">A carregar transportes...</div>
+      <div class="card card--dark" id="itineraryHotelBox">A carregar alojamento...</div>
     </section>
 
-    <div class="itinerary-days">
-      <div class="itinerary-days__item">DIA 1</div>
-      <div class="itinerary-days__item">DIA 2</div>
-      <div class="itinerary-days__item">DIA 3</div>
-    </div>
-
-    <table class="itinerary-table">
-      <tbody id="itineraryTableBody">
-        <tr>
-          <td>Sem atividades ainda</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-      </tbody>
-    </table>
+    <section class="itinerary-grid-wrap">
+      <div id="itineraryGrid" class="itinerary-grid-dynamic"></div>
+    </section>
   </main>
 
   <footer class="site-footer">

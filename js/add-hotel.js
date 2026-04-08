@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const tripId = getTripIdFromURL();
   const editIndex = getHotelEditIndexFromURL();
+  const trip = getTripById(tripId);
 
   if (!tripId) {
     window.location.href = 'index.html';
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const successMessage = document.getElementById('hotelSuccessMessage');
   const priceInput = document.getElementById('hotelPrice');
   const deleteButton = document.getElementById('deleteHotelButton');
+  const hotelDateInput = document.getElementById('hotelDate');
 
   if (cancelLink) {
     cancelLink.href = `hotels.html?id=${tripId}`;
@@ -23,6 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (!hotelForm) return;
+
+  if (trip && hotelDateInput) {
+  hotelDateInput.min = trip.startDate;
+  hotelDateInput.max = trip.endDate;
+}
 
   if (priceInput) {
     priceInput.addEventListener('input', () => {
@@ -94,6 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!name || !date || !hotelNightsEl.value.trim()) {
       showHotelMessage('Ei viajante 😅 ainda faltam alguns campos obrigatórios.');
+      return;
+    }
+
+    if (trip && (date < trip.startDate || date > trip.endDate)) {
+      showHotelMessage('A data do alojamento tem de estar dentro das datas da viagem.');
       return;
     }
 
