@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/trip.css" />
+  <link rel="stylesheet" href="css/trip-budget.css" />
+  <link rel="stylesheet" href="css/trip-itinerary.css" />
+  <link rel="stylesheet" href="css/trip-activities.css" />
+  <link rel="stylesheet" href="css/trip-records.css" />
 </head>
 <body>
   <header class="site-header site-header--blue">
@@ -25,6 +29,16 @@
   <h1 class="page-title">DETALHES DA VIAGEM</h1>
 
   <section id="tripSummary" class="trip-summary card card--dark">A carregar viagem...</section>
+
+  <div class="trip-main-actions">
+    <button type="button" class="button button--secondary" id="editTripButton">
+      Editar viagem
+    </button>
+
+    <button type="button" class="button button--danger" id="deleteTripButton">
+      Eliminar viagem
+    </button>
+  </div>
 
   <section class="trip-panels">
     <div class="trip-panel-block">
@@ -62,6 +76,7 @@
     <a class="button button--secondary" id="openActivitiesLink" href="activities.html">Gerir atividades</a>
     <a class="button button--secondary" id="openBudgetLink" href="budget.html">Gerir Budget</a>
   </div>
+
 </main>
 
   <footer class="site-footer">

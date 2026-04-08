@@ -2,6 +2,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const tripForm = document.getElementById('tripForm');
   if (!tripForm) return;
 
+  const params = new URLSearchParams(window.location.search);
+  const tripId = params.get('id');
+  const isEditMode = params.get('edit') === 'true';
+
+  if (isEditMode && tripId) {
+    const trip = getTripById(tripId);
+
+    if (trip) {
+      document.getElementById('destination').value = trip.destination || '';
+      document.getElementById('startDate').value = trip.startDate || '';
+      document.getElementById('endDate').value = trip.endDate || '';
+      document.getElementById('budget').value = trip.budget || '';
+      document.getElementById('notes').value = trip.notes || '';
+    }
+  }
+
   tripForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -11,19 +27,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const budget = Number(document.getElementById('budget').value);
     const notes = document.getElementById('notes').value.trim();
 
-    if (!destination || !startDate || !endDate || !budget) {
-      alert('Preenche todos os campos obrigatórios.');
-      return;
-    }
+    if (isEditMode && tripId) {
+      updateTrip(tripId, (trip) => ({
+        ...trip,
+        destination,
+        startDate,
+        endDate,
+        budget,
+        notes
+      }));
 
-    if (new Date(endDate) < new Date(startDate)) {
-      alert('A data de fim não pode ser anterior à data de início.');
+      window.location.href = `trip.html?id=${tripId}`;
       return;
     }
 
     const trips = getTrips();
-
-    const newTrip = {
+    trips.push({
       id: Date.now(),
       destination,
       startDate,
@@ -35,11 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
       transports: [],
       activities: [],
       expenses: []
-    };
+    });
 
-    trips.push(newTrip);
     saveTrips(trips);
-
-    window.location.href = `trip.html?id=${newTrip.id}`;
+    window.location.href = 'index.html';
   });
 });

@@ -1,0 +1,46 @@
+.trip-record {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.trip-record:last-child {
+  border-bottom: none;
+}
+
+.trip-record__badge {
+  display: inline-block;
+  background: #3a86ff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 14px;
+  margin-bottom: 8px;
+}
+
+.trip-record__title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.trip-record__meta {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.trip-record__actions {
+  margin-top: 12px;
+}
+
+.hotels-wrapper,
+.transports-wrapper {
+  width: min(860px, 100%);
+  margin: 0 auto 20px;
+  display: grid;
+  gap: 20px;
+  background: transparent;
+  border: none;
+  padding: 0;
+}

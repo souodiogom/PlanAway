@@ -51,4 +51,9 @@ function ensureSeedData() {
   saveTrips(seeded);
 }
 
+function deleteTrip(id) {
+  const trips = getTrips().filter((trip) => String(trip.id) !== String(id));
+  saveTrips(trips);
+}
+
 document.addEventListener('DOMContentLoaded', ensureSeedData);

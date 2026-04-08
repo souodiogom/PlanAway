@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderBudget(tripId);
   renderItinerary(tripId);
   bindActionButtons(tripId);
+  bindTripMainActions(tripId);
 });
 
 function setupLinks(tripId) {
@@ -524,6 +525,28 @@ function bindActionButtons(tripId) {
   if (addActivityButton) {
     addActivityButton.addEventListener('click', () => {
       window.location.href = `add-activity.html?id=${tripId}`;
+    });
+  }
+}
+
+function bindTripMainActions(tripId) {
+  const editTripButton = document.getElementById('editTripButton');
+  const deleteTripButton = document.getElementById('deleteTripButton');
+
+  if (editTripButton) {
+    editTripButton.addEventListener('click', () => {
+      window.location.href = `create-trip.html?id=${tripId}&edit=true`;
+    });
+  }
+
+  if (deleteTripButton) {
+    deleteTripButton.addEventListener('click', () => {
+      const confirmed = confirm('Tens a certeza que queres eliminar esta viagem?');
+      if (!confirmed) return;
+
+      deleteTrip(tripId);
+      alert('Viagem eliminada com sucesso.');
+      window.location.href = 'index.html';
     });
   }
 }
