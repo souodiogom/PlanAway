@@ -10,4 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (tripsCount) tripsCount.textContent = trips.length;
   if (activitiesCount) activitiesCount.textContent = activities;
   if (expensesCount) expensesCount.textContent = expenses;
+
+  document.getElementById('logoutButton')?.addEventListener('click', () => {
+    logoutUser();
+  });
 });

@@ -3,33 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PlanAway - Login</title>
+  <title>PlanAway - Registar</title>
+
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/trip.css" />
-  <link rel="stylesheet" href="css/trip-budget.css" />
-  <link rel="stylesheet" href="css/trip-itinerary.css" />
-  <link rel="stylesheet" href="css/trip-activities.css" />
-  <link rel="stylesheet" href="css/trip-records.css" />
+  <link rel="stylesheet" href="css/register.css" />
 </head>
+
 <body>
   <main class="auth-shell">
+
     <div class="auth-card">
       <h1 class="auth-logo">Plan<span>Away✈</span></h1>
-      <form class="auth-form card card--form">
-        <label class="form-field">
-          <span class="form-field__label">Email</span>
-          <input type="email" placeholder="email@exemplo.com" />
-        </label>
-        <label class="form-field">
-          <span class="form-field__label">Password</span>
-          <input type="password" placeholder="********" />
-        </label>
-        <button type="button" class="button button--primary">Entrar</button>
+
+      <form class="auth-form">
+        <input id="registerEmail" type="email" placeholder="email@" />
+        <input id="registerPassword" type="password" placeholder="PASSWORD" />
+
+        <button id="registerButton" type="button" class="auth-button">
+          CRIAR CONTA
+        </button>
+
       </form>
-      <p class="auth-helper">Ainda não tens conta? <a href="register.html">Registar</a></p>
+
+      <p class="auth-helper">
+        Já tem conta? <a href="login.html">Iniciar sessão</a>
+      </p>
     </div>
+
+    <footer class="auth-footer">
+      <div class="auth-footer-line"></div>
+      <span>FOOTER</span>
+    </footer>
   </main>
+
+  <script src="js/auth.js"></script>
+<script>
+  document.getElementById('registerButton').addEventListener('click', () => {
+    const email = document.getElementById('registerEmail').value.trim();
+    const password = document.getElementById('registerPassword').value.trim();
+
+    if (!email || !password) {
+      alert('Preenche o email e a password.');
+      return;
+    }
+
+    registerUser(email, password);
+  });
+</script>
 </body>
 </html>

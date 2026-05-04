@@ -4,33 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PlanAway - Login</title>
+
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/trip.css" />
-  <link rel="stylesheet" href="css/trip.css" />
-  <link rel="stylesheet" href="css/trip-budget.css" />
-  <link rel="stylesheet" href="css/trip-itinerary.css" />
-  <link rel="stylesheet" href="css/trip-activities.css" />
-  <link rel="stylesheet" href="css/trip-records.css" />
+  <link rel="stylesheet" href="css/login.css" />
 </head>
+
 <body>
   <main class="auth-shell">
-    <div class="auth-card">
+
+    <section class="auth-card">
       <h1 class="auth-logo">Plan<span>Away✈</span></h1>
-      <form class="auth-form card card--form">
-        <label class="form-field">
-          <span class="form-field__label">Email</span>
-          <input type="email" placeholder="email@exemplo.com" />
-        </label>
-        <label class="form-field">
-          <span class="form-field__label">Password</span>
-          <input type="password" placeholder="********" />
-        </label>
-        <button type="button" class="button button--primary">Entrar</button>
+
+      <form class="auth-form">
+        <input id="loginEmail" type="email" placeholder="email@" />
+        <input id="loginPassword" type="password" placeholder="PASSWORD" />
+
+        <button id="loginButton" type="button" class="auth-button">
+          INICIAR SESSÃO
+        </button>
       </form>
-      <p class="auth-helper">Ainda não tens conta? <a href="register.html">Registar</a></p>
-    </div>
+
+      <p class="auth-helper">
+        Ainda não tem conta?
+        <a href="register.html">Criar conta</a>
+      </p>
+    </section>
+
+    <footer class="auth-footer">
+      <div class="auth-footer-line"></div>
+      <span>FOOTER</span>
+    </footer>
   </main>
+
+  <script src="js/auth.js"></script>
+<script>
+  document.getElementById('loginButton').addEventListener('click', () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    if (!email || !password) {
+      alert('Preenche o email e a password.');
+      return;
+    }
+
+    loginUser(email, password);
+  });
+</script>
 </body>
 </html>

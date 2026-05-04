@@ -91,3 +91,27 @@
   margin-bottom: 10px;
   font-size: 18px;
 }
+
+/* LOGO - header azul */
+.site-header--blue .logo-plan {
+  color: white;
+}
+
+.site-header--blue .logo-away {
+  color: #ffd21f;
+}
+
+/* LOGO - header amarelo */
+.site-header--yellow .logo-plan {
+  color: white;
+}
+
+.site-header--yellow .logo-away {
+  color: #2f80ed;
+}
+
+.logo-plane {
+  display: inline-block;
+  transform: rotate(90deg); /* avião para baixo ↓ */
+  margin-left: 6px;
+}

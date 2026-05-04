@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PlanAway - Itinerário</title>
+  <title>PlanAway - Home</title>
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/home.css" />
   <link rel="stylesheet" href="css/trip.css" />
   <link rel="stylesheet" href="css/trip-budget.css" />
   <link rel="stylesheet" href="css/trip-itinerary.css" />
@@ -16,38 +17,34 @@
 </head>
 <body>
   <header class="site-header site-header--blue">
-  <h1 class="logo">
-    <a href="index.html" class="logo">
-          <span class="logo-plan">Plan</span>
-          <span class="logo-away">Away✈</span>
-    </a>
-  </h1>
-  
+    <h1 class="logo">
+      <a href="index.html" class="logo">
+        <span class="logo-plan">Plan</span>
+        <span class="logo-away">Away✈</span>
+      </a>
+    </h1>
     <nav class="site-nav">
-      <a class="site-nav__link site-nav__link--yellow" href="home.html">Viagens</a>
-      <a class="site-nav__link site-nav__link--yellow" href="trip.html">Nova Viagem</a>
-      <a class="site-nav__link site-nav__link--yellow is-active" href="itinerary.html">Itinerário</a>
+      <a class="site-nav__link site-nav__link--yellow is-active" href="home.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow" href="create-trip.html">Nova Viagem</a>
+      <a class="site-nav__link site-nav__link--yellow" href="itinerary.html">Itinerário</a>
       <a class="site-nav__link site-nav__link--yellow" href="budget.html">Budget</a>
     </nav>
     <a class="site-header__profile" href="profile.html">O meu perfil</a>
-    
   </header>
 
-  <main class="page-shell page-shell--trip page-shell--itinerary">
-    <h1 class="page-title page-title--itinerary">ITINERÁRIO DA VIAGEM</h1>
-
-    <section class="itinerary-top-grid">
-      <div class="card card--dark itinerary-info-card" id="itineraryTripBox">
-        A carregar...
+  <main class="page-shell page-shell--home">
+    <section class="home-hero">
+      <p class="home-hero__eyebrow">Está a planear viajar?</p>
+      <div class="home-trip-grid" id="tripsGrid"></div>
+      <div class="home-hero__actions">
+        <a
+  href="create-trip.html"
+  class="button button--primary"
+  onclick="sessionStorage.removeItem('editTripId')"
+>
+  Criar nova viagem
+</a>
       </div>
-
-      <div class="card card--dark itinerary-info-card" id="itineraryFlightBox">
-        A carregar voo...
-      </div>
-    </section>
-
-    <section class="itinerary-grid-wrap">
-      <div id="itineraryGrid" class="itinerary-grid-dynamic"></div>
     </section>
   </main>
 
@@ -58,6 +55,6 @@
 
   <script src="js/utils.js"></script>
   <script src="js/storage.js"></script>
-  <script src="js/trip.js"></script>
+  <script src="js/home.js?v=3"></script>
 </body>
 </html>
