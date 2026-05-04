@@ -3,31 +3,53 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!tripForm) return;
 
   const params = new URLSearchParams(window.location.search);
-  const tripId = params.get('id');
-  const isEditMode = params.get('edit') === 'true';
+let tripId = params.get('id');
 
-  if (isEditMode && tripId) {
+if (!tripId) {
+  tripId = sessionStorage.getItem('editTripId');
+}
+
+const isEditMode = Boolean(tripId);
+
+  const destinationInput = document.getElementById('destination');
+  const startDateInput = document.getElementById('startDate');
+  const endDateInput = document.getElementById('endDate');
+  const budgetInput = document.getElementById('budget');
+  const notesInput = document.getElementById('notes');
+
+  if (isEditMode) {
     const trip = getTripById(tripId);
 
     if (trip) {
-      document.getElementById('destination').value = trip.destination || '';
-      document.getElementById('startDate').value = trip.startDate || '';
-      document.getElementById('endDate').value = trip.endDate || '';
-      document.getElementById('budget').value = trip.budget || '';
-      document.getElementById('notes').value = trip.notes || '';
+      destinationInput.value = trip.destination || '';
+      startDateInput.value = trip.startDate || '';
+      endDateInput.value = trip.endDate || '';
+      budgetInput.value = trip.budget || '';
+      notesInput.value = trip.notes || '';
+
+      const title = document.querySelector('.page-title');
+      if (title) title.textContent = 'EDITAR VIAGEM';
+
+      const submitButton = tripForm.querySelector('button[type="submit"]');
+      if (submitButton) submitButton.textContent = 'Guardar alterações';
     }
   }
 
   tripForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const destination = document.getElementById('destination').value.trim();
-    const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
-    const budget = Number(document.getElementById('budget').value);
-    const notes = document.getElementById('notes').value.trim();
+    const destination = destinationInput.value.trim();
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
+    const budget = Number(budgetInput.value);
+    const notes = notesInput.value.trim();
 
-    if (isEditMode && tripId) {
+    if (!destination || !startDate || !endDate || Number.isNaN(budget)) {
+      alert('Preenche todos os campos obrigatórios.');
+      return;
+    }
+
+    if (isEditMode) {
       updateTrip(tripId, (trip) => ({
         ...trip,
         destination,
@@ -37,12 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
         notes
       }));
 
+      sessionStorage.removeItem('editTripId');
       window.location.href = `trip.html?id=${tripId}`;
       return;
     }
 
     const trips = getTrips();
-    trips.push({
+
+    const newTrip = {
       id: Date.now(),
       destination,
       startDate,
@@ -54,9 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
       transports: [],
       activities: [],
       expenses: []
-    });
+    };
 
+    trips.push(newTrip);
     saveTrips(trips);
-    window.location.href = 'index.html';
+
+    window.location.href = `trip.html?id=${newTrip.id}`;
   });
 });

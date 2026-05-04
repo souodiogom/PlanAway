@@ -1,3 +1,5 @@
+console.log('HOME.JS NOVO CARREGADO');
+
 document.addEventListener('DOMContentLoaded', () => {
   renderTrips();
 });
@@ -26,14 +28,15 @@ function renderTrips() {
         <p><strong>Orçamento:</strong> €${trip.budget}</p>
         <p><strong>Gasto:</strong> €${trip.spent || 0}</p>
       </article>
+
       <div class="trip-card-button">
-        <a 
-          href="trip.html?id=${trip.id}" 
+        <button
+          type="button"
           class="button button--secondary open-trip-link"
           data-trip-id="${trip.id}"
         >
           Ver viagem
-        </a>
+        </button>
       </div>
     </div>
   `).join('');
@@ -42,12 +45,21 @@ function renderTrips() {
 }
 
 function bindTripLinks() {
-  const links = document.querySelectorAll('.open-trip-link');
+  const buttons = document.querySelectorAll('.open-trip-link');
 
-  links.forEach((link) => {
-    link.addEventListener('click', () => {
-      const tripId = link.dataset.tripId;
+  buttons.forEach((button) => {
+    button.onclick = () => {
+      const tripId = button.dataset.tripId;
+
+      if (!tripId) {
+        alert('Não foi possível identificar esta viagem.');
+        return;
+      }
+
       sessionStorage.setItem('selectedTripId', tripId);
-    });
+      localStorage.setItem('activeTripId', tripId);
+
+      window.location.href = `trip.html?id=${tripId}`;
+    };
   });
 }

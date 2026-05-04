@@ -18,8 +18,8 @@
   <header class="site-header site-header--blue">
     <a class="logo" href="index.html">Plan<span>Away✈</span></a>
     <nav class="site-nav">
-      <a class="site-nav__link site-nav__link--yellow is-active" href="index.html">Home</a>
-      <a class="site-nav__link site-nav__link--yellow" href="create-trip.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow is-active" href="index.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow" href="create-trip.html">Nova Viagem</a>
       <a class="site-nav__link site-nav__link--yellow" href="itinerary.html">Itinerário</a>
       <a class="site-nav__link site-nav__link--yellow" href="budget.html">Budget</a>
     </nav>
@@ -31,7 +31,13 @@
       <p class="home-hero__eyebrow">Está a planear viajar?</p>
       <div class="home-trip-grid" id="tripsGrid"></div>
       <div class="home-hero__actions">
-        <a href="create-trip.html" class="button button--primary">Criar nova viagem</a>
+        <a
+  href="create-trip.html"
+  class="button button--primary"
+  onclick="sessionStorage.removeItem('editTripId')"
+>
+  Criar nova viagem
+</a>
       </div>
     </section>
   </main>
@@ -43,6 +49,6 @@
 
   <script src="js/utils.js"></script>
   <script src="js/storage.js"></script>
-  <script src="js/home.js"></script>
+  <script src="js/home.js?v=3"></script>
 </body>
 </html>

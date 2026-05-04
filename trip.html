@@ -17,8 +17,8 @@
   <header class="site-header site-header--blue">
     <a class="logo" href="index.html">Plan<span>Away✈</span></a>
     <nav class="site-nav">
-      <a class="site-nav__link site-nav__link--yellow" href="index.html">Home</a>
-      <a class="site-nav__link site-nav__link--yellow" href="create-trip.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow" href="index.html">Viagens</a>
+      <a class="site-nav__link site-nav__link--yellow" href="index.html">Nova viagem</a>
       <a class="site-nav__link site-nav__link--yellow" href="itinerary.html">Itinerário</a>
       <a class="site-nav__link site-nav__link--yellow" href="budget.html">Budget</a>
     </nav>
@@ -31,9 +31,18 @@
   <section id="tripSummary" class="trip-summary card card--dark">A carregar viagem...</section>
 
   <div class="trip-main-actions">
-    <button type="button" class="button button--secondary" id="editTripButton">
-      Editar viagem
-    </button>
+    <button
+  type="button"
+  class="button button--secondary"
+  id="editTripButton"
+  onclick="
+    const id = localStorage.getItem('activeTripId');
+    sessionStorage.setItem('editTripId', id);
+    window.location.href = 'create-trip.html?id=' + id;
+  "
+>
+  Editar viagem
+</button>
 
     <button type="button" class="button button--danger" id="deleteTripButton">
       Eliminar viagem
@@ -86,6 +95,6 @@
 
   <script src="js/utils.js"></script>
   <script src="js/storage.js"></script>
-  <script src="js/trip.js"></script>
+  <script src="js/trip.js?v=2"></script>
 </body>
 </html>

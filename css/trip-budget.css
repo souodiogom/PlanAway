@@ -1,79 +1,76 @@
-.budget-layout-inline {
+.page-title--budget {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: #6b7280;
+  margin-bottom: 34px;
+}
+
+.budget-figma-layout {
   display: grid;
-  grid-template-columns: minmax(320px, 420px) minmax(180px, 220px);
+  grid-template-columns: minmax(260px, 420px) 260px;
   justify-content: center;
-  gap: 36px;
-  align-items: start;
+  align-items: center;
+  gap: 44px;
   margin-top: 20px;
 }
 
-#budgetList {
-  padding: 16px 20px;
+.budget-list-card {
+  background: #e5e7eb;
+  padding: 14px 0;
+  min-width: 320px;
 }
 
-.trip-budget-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 18px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.trip-budget-row:last-child {
-  border-bottom: none;
-}
-
-#budgetSummary {
-  padding: 16px 20px;
+.budget-item-row {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  font-size: 18px;
 }
 
-.trip-budget-summary-box {
-  background: #4d84ff;
-  color: #fff;
-  border-radius: 10px;
-  padding: 26px 18px;
-  width: 100%;
-  max-width: 180px;
-  min-height: 150px;
+.budget-item-row strong {
+  font-weight: 600;
+}
+
+.budget-item-row .button {
+  padding: 7px 16px;
+  font-size: 13px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #3a86ff;
+  border: 1px solid #3a86ff;
+}
+
+.budget-summary-card {
+  background: #3a86ff;
+  color: #ffffff;
+  border-radius: 8px;
+  width: 260px;
+  min-height: 170px;
+  padding: 28px 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  gap: 30px;
   text-align: center;
+  font-weight: 800;
+  letter-spacing: 2px;
 }
 
-.trip-budget-summary-box p {
+.budget-summary-card p {
   margin: 0;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.8;
+  color: #ffffff;
 }
 
-@media (max-width: 900px) {
-  .budget-layout-inline {
+@media (max-width: 800px) {
+  .budget-figma-layout {
     grid-template-columns: 1fr;
     justify-items: center;
-    gap: 24px;
   }
 
-  #budgetList,
-  #budgetSummary {
+  .budget-list-card,
+  .budget-summary-card {
     width: 100%;
-    max-width: 420px;
-  }
-
-  .trip-budget-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .trip-budget-summary-box {
-    max-width: 220px;
-    min-height: 140px;
+    max-width: 360px;
   }
 }

@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const tripId = getTripIdFromURL();
+  let tripId = new URLSearchParams(window.location.search).get('id');
+
+  if (!tripId) {
+    tripId = sessionStorage.getItem('selectedTripId');
+  }
+
+  if (!tripId) {
+    tripId = localStorage.getItem('activeTripId');
+  }
+
   console.log('Trip ID resolvido:', tripId);
 
   if (!tripId) {
@@ -7,6 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'index.html';
     return;
   }
+
+  sessionStorage.setItem('selectedTripId', tripId);
+  localStorage.setItem('activeTripId', tripId);
 
   setupLinks(tripId);
   renderTripSummary(tripId);
@@ -28,49 +40,17 @@ function setupLinks(tripId) {
     const href = link.getAttribute('href');
     if (!href) return;
 
-    if (href === 'trip.html' || href === 'trip') {
-      link.href = `trip.html?id=${tripId}`;
-    }
-
-    if (href === 'hotels.html' || href === 'hotels') {
-      link.href = `hotels.html?id=${tripId}`;
-    }
-
-    if (href === 'add-hotel.html' || href === 'add-hotel') {
-      link.href = `add-hotel.html?id=${tripId}`;
-    }
-
-    if (href === 'transports.html' || href === 'transports') {
-      link.href = `transports.html?id=${tripId}`;
-    }
-
-    if (href === 'add-transport.html' || href === 'add-transport') {
-      link.href = `add-transport.html?id=${tripId}`;
-    }
-
-    if (href === 'activities.html' || href === 'activities') {
-      link.href = `activities.html?id=${tripId}`;
-    }
-
-    if (href === 'add-activity.html' || href === 'add-activity') {
-      link.href = `add-activity.html?id=${tripId}`;
-    }
-
-    if (href === 'budget.html' || href === 'budget') {
-      link.href = `budget.html?id=${tripId}`;
-    }
-
-    if (href === 'itinerary.html' || href === 'itinerary') {
-      link.href = `itinerary.html?id=${tripId}`;
-    }
-
-    if (href === 'expenses.html' || href === 'expenses') {
-      link.href = `expenses.html?id=${tripId}`;
-    }
-
-    if (href === 'index.html' || href === 'index') {
-      link.href = 'index.html';
-    }
+    if (href === 'trip.html' || href === 'trip') link.href = `trip.html?id=${tripId}`;
+    if (href === 'hotels.html' || href === 'hotels') link.href = `hotels.html?id=${tripId}`;
+    if (href === 'add-hotel.html' || href === 'add-hotel') link.href = `add-hotel.html?id=${tripId}`;
+    if (href === 'transports.html' || href === 'transports') link.href = `transports.html?id=${tripId}`;
+    if (href === 'add-transport.html' || href === 'add-transport') link.href = `add-transport.html?id=${tripId}`;
+    if (href === 'activities.html' || href === 'activities') link.href = `activities.html?id=${tripId}`;
+    if (href === 'add-activity.html' || href === 'add-activity') link.href = `add-activity.html?id=${tripId}`;
+    if (href === 'budget.html' || href === 'budget') link.href = `budget.html?id=${tripId}`;
+    if (href === 'itinerary.html' || href === 'itinerary') link.href = `itinerary.html?id=${tripId}`;
+    if (href === 'expenses.html' || href === 'expenses') link.href = `expenses.html?id=${tripId}`;
+    if (href === 'index.html' || href === 'index') link.href = 'index.html';
   });
 }
 
@@ -183,11 +163,7 @@ function renderHotelsPage(tripId) {
               </div>
 
               <div class="activity-list-item__actions">
-                <button
-                  type="button"
-                  class="button button--secondary"
-                  onclick="editHotel('${tripId}', ${hotel.index})"
-                >
+                <button type="button" class="button button--secondary" onclick="editHotel('${tripId}', ${hotel.index})">
                   Editar
                 </button>
               </div>
@@ -307,11 +283,7 @@ function renderTransportsPage(tripId) {
               </div>
 
               <div class="activity-list-item__actions">
-                <button
-                  type="button"
-                  class="button button--secondary"
-                  onclick="editTransport('${tripId}', ${transport.index})"
-                >
+                <button type="button" class="button button--secondary" onclick="editTransport('${tripId}', ${transport.index})">
                   Editar
                 </button>
               </div>
@@ -407,11 +379,7 @@ function renderActivities(tripId) {
               </div>
 
               <div class="activity-list-item__actions">
-                <button
-                  type="button"
-                  class="button button--secondary"
-                  onclick="editActivity('${tripId}', ${activity.index})"
-                >
+                <button type="button" class="button button--secondary" onclick="editActivity('${tripId}', ${activity.index})">
                   Editar
                 </button>
               </div>
@@ -435,28 +403,33 @@ function renderBudget(tripId) {
   if (!trip || !budgetList || !budgetSummary) return;
 
   const budget = Number(trip.budget) || 0;
-  const spent = Number(trip.spent) || 0;
+
+  const hotelTotal = (trip.hotels || [])
+    .reduce((sum, hotel) => sum + (Number(hotel.price) || 0), 0);
+
+  const transportTotal = (trip.transports || [])
+    .reduce((sum, transport) => sum + (Number(transport.price) || 0), 0);
+
+  const activitiesTotal = (trip.activities || [])
+    .reduce((sum, activity) => sum + (Number(activity.cost) || 0), 0);
+
+  const expensesTotal = (trip.expenses || [])
+    .reduce((sum, expense) => sum + (Number(expense.cost) || 0), 0);
+
+  const spent = hotelTotal + transportTotal + activitiesTotal + expensesTotal;
   const remaining = budget - spent;
-  const activitiesCount = trip.activities?.length || 0;
 
   budgetList.innerHTML = `
-    <div class="trip-budget-row">
-      <span>Budget inicial</span>
-      <strong>€${budget}</strong>
-    </div>
-    <div class="trip-budget-row">
-      <span>Total gasto</span>
-      <strong>€${spent}</strong>
-    </div>
-    <div class="trip-budget-row">
-      <span>N.º atividades</span>
-      <strong>${activitiesCount}</strong>
-    </div>
+    <div class="budget-item-row">Budget: <strong>${budget}€</strong></div>
+    <div class="budget-item-row">Voos/Transportes: <strong>${transportTotal}€</strong></div>
+    <div class="budget-item-row">Hotel: <strong>${hotelTotal}€</strong></div>
+    <div class="budget-item-row">Actividades: <strong>${activitiesTotal}€</strong></div>
+    <div class="budget-item-row">Comida: <strong>${expensesTotal}€</strong></div>
   `;
 
   budgetSummary.innerHTML = `
-    <p>Total restante</p>
-    <strong style="font-size: 28px;">€${remaining}</strong>
+    <p>Total Gasto: ${spent}€</p>
+    <p>A gastar: ${remaining}€</p>
   `;
 }
 
@@ -540,11 +513,9 @@ function renderItinerary(tripId) {
         entries = [...dayTransports, ...dayActivities];
       }
 
-      if (!entries.length) {
-        cell.innerHTML = `<span class="it-empty">-</span>`;
-      } else {
-        cell.innerHTML = entries.join('');
-      }
+      cell.innerHTML = entries.length
+        ? entries.join('')
+        : `<span class="it-empty">-</span>`;
 
       grid.appendChild(cell);
     });
@@ -617,20 +588,21 @@ function bindTripMainActions(tripId) {
   const deleteTripButton = document.getElementById('deleteTripButton');
 
   if (editTripButton) {
-    editTripButton.addEventListener('click', () => {
+    editTripButton.onclick = () => {
+      sessionStorage.setItem('editTripId', tripId);
       window.location.href = `create-trip.html?id=${tripId}&edit=true`;
-    });
+    };
   }
 
   if (deleteTripButton) {
-    deleteTripButton.addEventListener('click', () => {
+    deleteTripButton.onclick = () => {
       const confirmed = confirm('Tens a certeza que queres eliminar esta viagem?');
       if (!confirmed) return;
 
       deleteTrip(tripId);
       alert('Viagem eliminada com sucesso.');
       window.location.href = 'index.html';
-    });
+    };
   }
 }
 
@@ -650,6 +622,7 @@ function renderItineraryFlightBox(trip, box) {
   }
 
   const flightKeywords = ['avião', 'aviao', 'voo', 'flight', 'plane'];
+
   const flightTransports = transports.filter((transport) => {
     const type = (transport.type || '').trim().toLowerCase();
     return flightKeywords.some((keyword) => type.includes(keyword));
