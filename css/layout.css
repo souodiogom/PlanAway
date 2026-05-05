@@ -68,7 +68,13 @@
 .site-header__profile { font-size: 12px; }
 .site-header__profile--dark { color: #111; }
 
-.site-footer { margin-top: auto; }
+.site-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
 
 .site-footer__line {
   width: min(86%, 1180px);
