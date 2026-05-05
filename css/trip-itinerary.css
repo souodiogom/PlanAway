@@ -4,7 +4,6 @@
   padding-top: 46px;
 }
 
-
 .itinerary-top-grid {
   width: min(100%, 1040px);
   margin: 0 auto 30px;
@@ -36,50 +35,21 @@
   margin: 0 auto;
 }
 
-.itinerary-days {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.itinerary-days__item {
-  background: #efcc33;
-  border: 1px solid #d1b01b;
-  border-bottom: none;
-  padding: 14px 12px 12px;
-  font-size: 17px;
-  font-weight: 800;
-  color: #111827;
-  text-transform: uppercase;
-}
-
-.itinerary-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.itinerary-table td {
-  border: 1px solid #d1b01b;
-  background: #efcc33;
-  padding: 16px 14px;
-  font-size: 15px;
-  color: #111827;
-  vertical-align: top;
-  min-height: 60px;
-}
-
 .itinerary-grid-wrap {
-  display: flex;
-  justify-content: center;
   width: 100%;
+  max-width: 100%;
   margin-top: 18px;
   overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 12px;
 }
 
 .itinerary-grid-dynamic {
-  display: inline-grid;
-  width: auto;
+  display: grid;
+  width: max-content;
+  min-width: max-content;
+  margin-left: 0;
+  transform: none;
   border: 1px solid #c8a800;
 }
 
@@ -137,22 +107,62 @@
   color: #1f2937;
 }
 
-@media (max-width: 900px) {
+/* MOBILE */
+@media (max-width: 768px) {
+  .page-shell--itinerary {
+    width: 94%;
+    padding-top: 30px;
+  }
+
   .itinerary-top-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 18px;
+    margin-bottom: 24px;
   }
 
-  .itinerary-board {
-    overflow-x: auto;
+  .itinerary-info-card {
+    min-height: 120px;
+    padding: 18px 14px;
+    font-size: 14px;
   }
 
-  .itinerary-days,
-  .itinerary-table {
-    min-width: 720px;
+  .itinerary-info-card strong {
+    font-size: 16px;
   }
 
-  #itineraryTripBox {
+  .itinerary-grid-wrap {
+    width: 100%;
     max-width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding-bottom: 14px;
+  }
+
+  .itinerary-grid-dynamic {
+    width: max-content;
+    min-width: max-content;
+  }
+
+  .itinerary-grid-dynamic .it-cell {
+    padding: 8px;
+    min-height: 56px;
+    font-size: 11px;
+  }
+
+  .itinerary-grid-dynamic .it-cell--day {
+    font-size: 12px;
+  }
+
+  .itinerary-grid-dynamic .it-cell--day span {
+    font-size: 10px;
+  }
+
+  .itinerary-grid-dynamic .it-cell--period {
+    min-width: 90px;
+    font-size: 10px;
+  }
+
+  .itinerary-grid-dynamic .it-cell--content {
+    min-width: 260px;
   }
 }

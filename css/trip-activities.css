@@ -133,38 +133,80 @@
   font-size: 15px;
 }
 
+.itinerary-grid-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0 auto;
+  padding-bottom: 12px;
+}
+
+.itinerary-grid-dynamic {
+  width: max-content;
+  min-width: max-content;
+  margin-left: 0 !important;
+  transform: none !important;
+  left: auto !important;
+}
+
 @media (max-width: 768px) {
+
+  /* container principal */
   #activitiesList {
-    gap: 16px;
-  }
-
-  .activity-day-group {
-    padding: 16px 20px 12px;
-  }
-
-  .activity-day-group__header {
+    display: flex !important;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 20px;
+    padding: 16px;
   }
 
-  .activity-list-item {
-    grid-template-columns: 1fr;
-    align-items: start;
-    gap: 10px;
-    padding: 12px 0;
-  }
-
-  .activity-list-item__details {
+  /* cada dia */
+  .activity-day,
+  .day-block {
+    display: flex;
     flex-direction: column;
-    gap: 4px;
+    align-items: center;
   }
 
-  .activity-list-item__actions {
-    justify-content: flex-start;
-    width: 100%;
+  /* título do dia */
+  .activity-day-title,
+  .day-title {
+    background: #f2cf3a;
+    padding: 4px 14px;
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 8px;
   }
 
-  .activity-list-item__actions .button {
+  /* lista de atividades */
+  .activity-list {
     width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
+
+  /* cada atividade */
+  .activity-item {
+    background: #f2cf3a;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    font-size: 11px;
+  }
+
+  /* letra (M, T, etc) */
+  .activity-item .letter {
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  /* preço */
+  .activity-item .price {
+    font-weight: 700;
+  }
+
 }

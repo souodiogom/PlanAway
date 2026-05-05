@@ -444,9 +444,17 @@ function renderItinerary(tripId) {
 
   const days = getTripDateRange(trip.startDate, trip.endDate);
   const periods = ['alojamento', 'manhã', 'tarde', 'noite'];
+  const isMobile = window.innerWidth <= 768;
 
   grid.innerHTML = '';
-  grid.style.gridTemplateColumns = `160px repeat(${days.length}, 230px)`;
+
+  grid.style.marginLeft = '0';
+  grid.style.transform = 'none';
+  grid.style.left = '0';
+
+  grid.style.gridTemplateColumns = isMobile
+    ? `90px repeat(${days.length}, 260px)`
+    : `160px repeat(${days.length}, 230px)`;
 
   grid.appendChild(createItineraryGridCell('', 'it-cell'));
 
@@ -485,12 +493,10 @@ function renderItinerary(tripId) {
         `);
       } else {
         const dayActivities = (trip.activities || [])
-          .filter((activity) => {
-            return (
-              activity.date === date &&
-              (activity.period || '').trim().toLowerCase() === period
-            );
-          })
+          .filter((activity) => (
+            activity.date === date &&
+            (activity.period || '').trim().toLowerCase() === period
+          ))
           .map((activity) => `
             <div class="it-entry">
               ${activity.name || 'Sem nome'} (€${Number(activity.cost) || 0})
@@ -498,12 +504,10 @@ function renderItinerary(tripId) {
           `);
 
         const dayTransports = (trip.transports || [])
-          .filter((transport) => {
-            return (
-              transport.date === date &&
-              (transport.period || '').trim().toLowerCase() === period
-            );
-          })
+          .filter((transport) => (
+            transport.date === date &&
+            (transport.period || '').trim().toLowerCase() === period
+          ))
           .map((transport) => `
             <div class="it-entry it-entry--transport">
               🚕 ${transport.type || 'Transporte'}
@@ -519,6 +523,17 @@ function renderItinerary(tripId) {
 
       grid.appendChild(cell);
     });
+  });
+
+  requestAnimationFrame(() => {
+    const gridWrap = document.querySelector('.itinerary-grid-wrap');
+
+    if (gridWrap) {
+      gridWrap.scrollTo({
+        left: 0,
+        behavior: 'auto'
+      });
+    }
   });
 }
 

@@ -42,7 +42,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  gap: 18px;
+  gap: 24px;
   flex-wrap: wrap;
   margin-top: 60px;
   width: 100%;
@@ -66,22 +66,30 @@
   opacity: 0.92;
 }
 
-@media (max-width: 900px) {
-  .trip-panels {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 768px) {
-  .trip-panel-actions,
-  .trip-bottom-actions {
+  .trip-panel-block {
+    display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .trip-panel-actions .button,
-  .trip-bottom-actions .button {
+  .trip-panel-block .card {
     width: 100%;
-    max-width: 260px;
+  }
+
+  .trip-panel-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .trip-panel-actions .button {
+    width: 130px !important;
+    max-width: 130px !important;
+    padding: 8px 12px !important;
+    font-size: 13px;
+    text-align: center;
   }
 }
