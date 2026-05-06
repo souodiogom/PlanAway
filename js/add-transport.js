@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const tripId = getTripIdFromURL();
   const editIndex = getTransportEditIndexFromURL();
-  const trip = getTripById(tripId);
 
   if (!tripId) {
     window.location.href = 'index.html';
     return;
   }
+
+  const trip = getTripById(tripId);
 
   const cancelLink = document.getElementById('cancelTransportLink');
   const formTitle = document.getElementById('transportFormTitle');
@@ -16,11 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteButton = document.getElementById('deleteTransportButton');
   const transportDateInput = document.getElementById('transportDate');
 
+  const isEditMode = editIndex !== null && !Number.isNaN(editIndex);
+
   if (cancelLink) {
     cancelLink.href = `transports.html?id=${tripId}`;
   }
 
-  if (formTitle && editIndex !== null && !Number.isNaN(editIndex)) {
+  if (formTitle && isEditMode) {
     formTitle.textContent = 'EDITAR TRANSPORTE';
   }
 
@@ -37,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (editIndex !== null && !Number.isNaN(editIndex)) {
+  if (isEditMode) {
+    sessionStorage.setItem('editTransportIndex', String(editIndex));
     fillTransportFormForEdit(tripId, editIndex);
 
     if (deleteButton) {
@@ -60,17 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        const deletedTransport = trips[tripIndex].transports[editIndex];
-        const deletedPrice = Number(deletedTransport.price) || 0;
-
         trips[tripIndex].transports.splice(editIndex, 1);
-        trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) - deletedPrice;
-
-        if (trips[tripIndex].spent < 0) {
-          trips[tripIndex].spent = 0;
-        }
-
+        updateTripSpent(trips[tripIndex]);
         saveTrips(trips);
+
+        sessionStorage.removeItem('editTransportIndex');
+
         showTransportMessage('🗑️ Transporte apagado com sucesso.');
 
         setTimeout(() => {
@@ -78,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1200);
       });
     }
+  } else {
+    sessionStorage.removeItem('editTransportIndex');
   }
 
   transportForm.addEventListener('submit', (e) => {
@@ -126,35 +127,28 @@ document.addEventListener('DOMContentLoaded', () => {
       trips[tripIndex].transports = [];
     }
 
-    if (editIndex !== null && !Number.isNaN(editIndex) && trips[tripIndex].transports[editIndex]) {
-      const previousPrice = Number(trips[tripIndex].transports[editIndex].price) || 0;
+    const transportData = {
+      type,
+      date,
+      period,
+      price
+    };
 
-      trips[tripIndex].transports[editIndex] = {
-        type,
-        date,
-        period,
-        price
-      };
+    if (isEditMode && trips[tripIndex].transports[editIndex]) {
+      trips[tripIndex].transports[editIndex] = transportData;
 
-      trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) - previousPrice + price;
-
-      if (trips[tripIndex].spent < 0) {
-        trips[tripIndex].spent = 0;
-      }
-
+      updateTripSpent(trips[tripIndex]);
       saveTrips(trips);
+
+      sessionStorage.removeItem('editTransportIndex');
+
       showTransportMessage('✏️ Transporte atualizado com sucesso.');
     } else {
-      trips[tripIndex].transports.push({
-        type,
-        date,
-        period,
-        price
-      });
+      trips[tripIndex].transports.push(transportData);
 
-      trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) + price;
-
+      updateTripSpent(trips[tripIndex]);
       saveTrips(trips);
+
       showTransportMessage('🚍 Transporte guardado com sucesso.');
     }
 
@@ -178,7 +172,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function getTransportEditIndexFromURL() {
   const params = new URLSearchParams(window.location.search);
   const value = params.get('edit');
-  return value !== null ? Number(value) : null;
+
+  if (value !== null) {
+    sessionStorage.setItem('editTransportIndex', value);
+    return Number(value);
+  }
+
+  const storedValue = sessionStorage.getItem('editTransportIndex');
+
+  return storedValue !== null ? Number(storedValue) : null;
 }
 
 function fillTransportFormForEdit(tripId, editIndex) {
@@ -198,4 +200,20 @@ function fillTransportFormForEdit(tripId, editIndex) {
   if (transportDateEl) transportDateEl.value = transport.date || '';
   if (transportPeriodEl) transportPeriodEl.value = transport.period || '';
   if (transportPriceEl) transportPriceEl.value = transport.price ?? '';
+}
+
+function updateTripSpent(trip) {
+  const hotelTotal = (trip.hotels || [])
+    .reduce((sum, hotel) => sum + (Number(hotel.price) || 0), 0);
+
+  const transportTotal = (trip.transports || [])
+    .reduce((sum, transport) => sum + (Number(transport.price) || 0), 0);
+
+  const activitiesTotal = (trip.activities || [])
+    .reduce((sum, activity) => sum + (Number(activity.cost) || 0), 0);
+
+  const expensesTotal = (trip.expenses || [])
+    .reduce((sum, expense) => sum + (Number(expense.cost) || 0), 0);
+
+  trip.spent = hotelTotal + transportTotal + activitiesTotal + expensesTotal;
 }

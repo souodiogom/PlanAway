@@ -102,19 +102,24 @@ body {
 }
 
 .auth-footer-line {
-  border-top: 1px solid #aaa;
-  margin-bottom: 10px;
+  display: none;
 }
 
 .auth-footer span {
-  background: #ddd;
-  padding: 8px 28px;
+  background: transparent;
+  padding: 0;
   display: inline-block;
 }
 
 @media (max-width: 480px) {
+  .auth-shell {
+    padding: 40px 0 80px;
+    box-sizing: border-box;
+  }
+
   .auth-card {
     width: 90%;
+    max-width: 360px;
     transform: none;
   }
 
@@ -128,7 +133,11 @@ body {
   }
 
   .auth-footer {
-    position: static;
-    margin-top: 40px;
+    position: absolute;
+    bottom: 20px;
+    left: 5%;
+    right: 5%;
+    margin-top: 0;
+    font-size: 12px;
   }
 }

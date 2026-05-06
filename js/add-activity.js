@@ -14,11 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const costInput = document.getElementById('activityCost');
   const deleteButton = document.getElementById('deleteActivityButton');
 
+  const isEditMode = editIndex !== null && !Number.isNaN(editIndex);
+
   if (cancelLink) {
     cancelLink.href = `activities.html?id=${tripId}`;
   }
 
-  if (formTitle && editIndex !== null && !Number.isNaN(editIndex)) {
+  if (formTitle && isEditMode) {
     formTitle.textContent = 'EDITAR ATIVIDADE';
   }
 
@@ -30,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (editIndex !== null && !Number.isNaN(editIndex)) {
+  if (isEditMode) {
+    sessionStorage.setItem('editActivityIndex', String(editIndex));
     fillFormForEdit(tripId, editIndex);
 
     if (deleteButton) {
@@ -53,17 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        const deletedActivity = trips[tripIndex].activities[editIndex];
-        const deletedCost = Number(deletedActivity.cost) || 0;
-
         trips[tripIndex].activities.splice(editIndex, 1);
-        trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) - deletedCost;
-
-        if (trips[tripIndex].spent < 0) {
-          trips[tripIndex].spent = 0;
-        }
-
+        updateTripSpent(trips[tripIndex]);
         saveTrips(trips);
+
+        sessionStorage.removeItem('editActivityIndex');
+
         showFunnyMessage('🗑️ Atividade apagada. Ficou mais leve essa viagem.');
 
         setTimeout(() => {
@@ -71,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1200);
       });
     }
+  } else {
+    sessionStorage.removeItem('editActivityIndex');
   }
 
   activityForm.addEventListener('submit', (e) => {
@@ -116,37 +116,29 @@ document.addEventListener('DOMContentLoaded', () => {
       trips[tripIndex].activities = [];
     }
 
-    if (editIndex !== null && !Number.isNaN(editIndex) && trips[tripIndex].activities[editIndex]) {
-      const previousCost = Number(trips[tripIndex].activities[editIndex].cost) || 0;
+    const activityData = {
+      name,
+      type,
+      date,
+      period,
+      cost
+    };
 
-      trips[tripIndex].activities[editIndex] = {
-        name,
-        type,
-        date,
-        period,
-        cost
-      };
+    if (isEditMode && trips[tripIndex].activities[editIndex]) {
+      trips[tripIndex].activities[editIndex] = activityData;
 
-      trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) - previousCost + cost;
-
-      if (trips[tripIndex].spent < 0) {
-        trips[tripIndex].spent = 0;
-      }
-
+      updateTripSpent(trips[tripIndex]);
       saveTrips(trips);
+
+      sessionStorage.removeItem('editActivityIndex');
+
       showFunnyMessage('✏️ Atividade atualizada! Ficou mesmo no ponto.');
     } else {
-      trips[tripIndex].activities.push({
-        name,
-        type,
-        date,
-        period,
-        cost
-      });
+      trips[tripIndex].activities.push(activityData);
 
-      trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) + cost;
-
+      updateTripSpent(trips[tripIndex]);
       saveTrips(trips);
+
       showFunnyMessage('✈️ Atividade guardada! Mais uma aventura no mapa.');
     }
 
@@ -170,7 +162,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function getEditIndexFromURL() {
   const params = new URLSearchParams(window.location.search);
   const value = params.get('edit');
-  return value !== null ? Number(value) : null;
+
+  if (value !== null) {
+    sessionStorage.setItem('editActivityIndex', value);
+    return Number(value);
+  }
+
+  const storedValue = sessionStorage.getItem('editActivityIndex');
+
+  return storedValue !== null ? Number(storedValue) : null;
 }
 
 function fillFormForEdit(tripId, editIndex) {
@@ -192,4 +192,20 @@ function fillFormForEdit(tripId, editIndex) {
   if (activityDateEl) activityDateEl.value = activity.date || '';
   if (activityPeriodEl) activityPeriodEl.value = activity.period || '';
   if (activityCostEl) activityCostEl.value = activity.cost ?? '';
+}
+
+function updateTripSpent(trip) {
+  const hotelTotal = (trip.hotels || [])
+    .reduce((sum, hotel) => sum + (Number(hotel.price) || 0), 0);
+
+  const transportTotal = (trip.transports || [])
+    .reduce((sum, transport) => sum + (Number(transport.price) || 0), 0);
+
+  const activitiesTotal = (trip.activities || [])
+    .reduce((sum, activity) => sum + (Number(activity.cost) || 0), 0);
+
+  const expensesTotal = (trip.expenses || [])
+    .reduce((sum, expense) => sum + (Number(expense.cost) || 0), 0);
+
+  trip.spent = hotelTotal + transportTotal + activitiesTotal + expensesTotal;
 }

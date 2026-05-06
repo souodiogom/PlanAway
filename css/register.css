@@ -102,12 +102,11 @@ body {
 }
 
 .auth-footer-line {
-  border-top: 1px solid #aaa;
-  margin-bottom: 10px;
+  display: none;
 }
 
 .auth-footer span {
-  background: #ddd;
-  padding: 8px 28px;
+  background: transparent;
+  padding: 0;
   display: inline-block;
 }

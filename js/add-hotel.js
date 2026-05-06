@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const tripId = getTripIdFromURL();
   const editIndex = getHotelEditIndexFromURL();
-  const trip = getTripById(tripId);
 
   if (!tripId) {
     window.location.href = 'index.html';
     return;
   }
+
+  const trip = getTripById(tripId);
 
   const cancelLink = document.getElementById('cancelHotelLink');
   const formTitle = document.getElementById('hotelFormTitle');
@@ -16,20 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteButton = document.getElementById('deleteHotelButton');
   const hotelDateInput = document.getElementById('hotelDate');
 
+  const isEditMode = editIndex !== null && !Number.isNaN(editIndex);
+
   if (cancelLink) {
     cancelLink.href = `hotels.html?id=${tripId}`;
   }
 
-  if (formTitle && editIndex !== null && !Number.isNaN(editIndex)) {
+  if (formTitle && isEditMode) {
     formTitle.textContent = 'EDITAR ALOJAMENTO';
   }
 
   if (!hotelForm) return;
 
   if (trip && hotelDateInput) {
-  hotelDateInput.min = trip.startDate;
-  hotelDateInput.max = trip.endDate;
-}
+    hotelDateInput.min = trip.startDate;
+    hotelDateInput.max = trip.endDate;
+  }
 
   if (priceInput) {
     priceInput.addEventListener('input', () => {
@@ -37,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (editIndex !== null && !Number.isNaN(editIndex)) {
+  if (isEditMode) {
+    sessionStorage.setItem('editHotelIndex', String(editIndex));
     fillHotelFormForEdit(tripId, editIndex);
 
     if (deleteButton) {
@@ -60,17 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        const deletedHotel = trips[tripIndex].hotels[editIndex];
-        const deletedPrice = Number(deletedHotel.price) || 0;
-
         trips[tripIndex].hotels.splice(editIndex, 1);
-        trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) - deletedPrice;
-
-        if (trips[tripIndex].spent < 0) {
-          trips[tripIndex].spent = 0;
-        }
-
+        updateTripSpent(trips[tripIndex]);
         saveTrips(trips);
+
+        sessionStorage.removeItem('editHotelIndex');
+
         showHotelMessage('🗑️ Alojamento apagado com sucesso.');
 
         setTimeout(() => {
@@ -78,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1200);
       });
     }
+  } else {
+    sessionStorage.removeItem('editHotelIndex');
   }
 
   hotelForm.addEventListener('submit', (e) => {
@@ -131,35 +132,28 @@ document.addEventListener('DOMContentLoaded', () => {
       trips[tripIndex].hotels = [];
     }
 
-    if (editIndex !== null && !Number.isNaN(editIndex) && trips[tripIndex].hotels[editIndex]) {
-      const previousPrice = Number(trips[tripIndex].hotels[editIndex].price) || 0;
+    const hotelData = {
+      name,
+      date,
+      nights,
+      price
+    };
 
-      trips[tripIndex].hotels[editIndex] = {
-        name,
-        date,
-        nights,
-        price
-      };
+    if (isEditMode && trips[tripIndex].hotels[editIndex]) {
+      trips[tripIndex].hotels[editIndex] = hotelData;
 
-      trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) - previousPrice + price;
-
-      if (trips[tripIndex].spent < 0) {
-        trips[tripIndex].spent = 0;
-      }
-
+      updateTripSpent(trips[tripIndex]);
       saveTrips(trips);
+
+      sessionStorage.removeItem('editHotelIndex');
+
       showHotelMessage('✏️ Alojamento atualizado com sucesso.');
     } else {
-      trips[tripIndex].hotels.push({
-        name,
-        date,
-        nights,
-        price
-      });
+      trips[tripIndex].hotels.push(hotelData);
 
-      trips[tripIndex].spent = (Number(trips[tripIndex].spent) || 0) + price;
-
+      updateTripSpent(trips[tripIndex]);
       saveTrips(trips);
+
       showHotelMessage('🏨 Alojamento guardado com sucesso.');
     }
 
@@ -183,7 +177,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function getHotelEditIndexFromURL() {
   const params = new URLSearchParams(window.location.search);
   const value = params.get('edit');
-  return value !== null ? Number(value) : null;
+
+  if (value !== null) {
+    sessionStorage.setItem('editHotelIndex', value);
+    return Number(value);
+  }
+
+  const storedValue = sessionStorage.getItem('editHotelIndex');
+
+  return storedValue !== null ? Number(storedValue) : null;
 }
 
 function fillHotelFormForEdit(tripId, editIndex) {
@@ -203,4 +205,20 @@ function fillHotelFormForEdit(tripId, editIndex) {
   if (hotelDateEl) hotelDateEl.value = hotel.date || '';
   if (hotelNightsEl) hotelNightsEl.value = hotel.nights ?? '';
   if (hotelPriceEl) hotelPriceEl.value = hotel.price ?? '';
+}
+
+function updateTripSpent(trip) {
+  const hotelTotal = (trip.hotels || [])
+    .reduce((sum, hotel) => sum + (Number(hotel.price) || 0), 0);
+
+  const transportTotal = (trip.transports || [])
+    .reduce((sum, transport) => sum + (Number(transport.price) || 0), 0);
+
+  const activitiesTotal = (trip.activities || [])
+    .reduce((sum, activity) => sum + (Number(activity.cost) || 0), 0);
+
+  const expensesTotal = (trip.expenses || [])
+    .reduce((sum, expense) => sum + (Number(expense.cost) || 0), 0);
+
+  trip.spent = hotelTotal + transportTotal + activitiesTotal + expensesTotal;
 }

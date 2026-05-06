@@ -71,9 +71,9 @@ function renderTripSummary(tripId) {
     el.innerHTML = `
       <strong>${trip.destination || 'Destino sem nome'}</strong><br>
       ${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}<br>
-      Budget: €${budget}<br>
-      Gasto: €${spent}<br>
-      Restante: €${remaining}
+      Budget: €${formatMoney(budget)}<br>
+      Gasto: €${formatMoney(spent)}<br>
+      Restante: €${formatMoney(remaining)}
     `;
   });
 }
@@ -134,11 +134,11 @@ function renderHotelsPage(tripId) {
     return new Date(a) - new Date(b);
   });
 
-  list.innerHTML = sortedDates.map((dateKey, dayIndex) => {
+  list.innerHTML = sortedDates.map((dateKey) => {
     const hotels = groupedHotels[dateKey];
     const dayLabel = dateKey === 'sem-data'
       ? 'Sem data definida'
-      : `DIA ${dayIndex + 1} · ${formatDate(dateKey)}`;
+      : `DIA ${getTripDayNumber(trip.startDate, dateKey)} · ${formatDate(dateKey)}`;
 
     return `
       <section class="activity-day-group">
@@ -158,13 +158,17 @@ function renderHotelsPage(tripId) {
 
                 <div class="activity-list-item__details">
                   <p><strong>Noites:</strong> ${hotel.nights || 0}</p>
-                  <p><strong>Valor:</strong> €${Number(hotel.price) || 0}</p>
+                  <p><strong>Valor:</strong> €${formatMoney(hotel.price)}</p>
                 </div>
               </div>
 
               <div class="activity-list-item__actions">
                 <button type="button" class="button button--secondary" onclick="editHotel('${tripId}', ${hotel.index})">
                   Editar
+                </button>
+
+                <button type="button" class="button button--danger" onclick="deleteHotel('${tripId}', ${hotel.index})">
+                  Eliminar
                 </button>
               </div>
             </article>
@@ -176,7 +180,26 @@ function renderHotelsPage(tripId) {
 }
 
 function editHotel(tripId, index) {
+  sessionStorage.setItem('selectedTripId', tripId);
+  sessionStorage.setItem('editHotelIndex', index);
+
   window.location.href = `add-hotel.html?id=${tripId}&edit=${index}`;
+}
+
+function deleteHotel(tripId, index) {
+  const confirmed = confirm('Eliminar este alojamento?');
+  if (!confirmed) return;
+
+  const trips = getTrips();
+  const trip = trips.find((t) => String(t.id) === String(tripId));
+
+  if (!trip || !trip.hotels) return;
+
+  trip.hotels.splice(index, 1);
+  updateTripSpent(trip);
+  saveTrips(trips);
+
+  location.reload();
 }
 
 function renderTransports(tripId) {
@@ -241,7 +264,7 @@ function renderTransportsPage(tripId) {
     return new Date(a) - new Date(b);
   });
 
-  list.innerHTML = sortedDates.map((dateKey, dayIndex) => {
+  list.innerHTML = sortedDates.map((dateKey) => {
     const transports = groupedTransports[dateKey]
       .slice()
       .sort((a, b) => {
@@ -258,7 +281,7 @@ function renderTransportsPage(tripId) {
 
     const dayLabel = dateKey === 'sem-data'
       ? 'Sem data definida'
-      : `DIA ${dayIndex + 1} · ${formatDate(dateKey)}`;
+      : `DIA ${getTripDayNumber(trip.startDate, dateKey)} · ${formatDate(dateKey)}`;
 
     return `
       <section class="activity-day-group">
@@ -278,13 +301,17 @@ function renderTransportsPage(tripId) {
 
                 <div class="activity-list-item__details">
                   <p><strong>Período:</strong> ${transport.period || '-'}</p>
-                  <p><strong>Valor:</strong> €${Number(transport.price) || 0}</p>
+                  <p><strong>Valor:</strong> €${formatMoney(transport.price)}</p>
                 </div>
               </div>
 
               <div class="activity-list-item__actions">
                 <button type="button" class="button button--secondary" onclick="editTransport('${tripId}', ${transport.index})">
                   Editar
+                </button>
+
+                <button type="button" class="button button--danger" onclick="deleteTransport('${tripId}', ${transport.index})">
+                  Eliminar
                 </button>
               </div>
             </article>
@@ -296,7 +323,26 @@ function renderTransportsPage(tripId) {
 }
 
 function editTransport(tripId, index) {
+  sessionStorage.setItem('selectedTripId', tripId);
+  sessionStorage.setItem('editTransportIndex', index);
+
   window.location.href = `add-transport.html?id=${tripId}&edit=${index}`;
+}
+
+function deleteTransport(tripId, index) {
+  const confirmed = confirm('Eliminar este transporte?');
+  if (!confirmed) return;
+
+  const trips = getTrips();
+  const trip = trips.find((t) => String(t.id) === String(tripId));
+
+  if (!trip || !trip.transports) return;
+
+  trip.transports.splice(index, 1);
+  updateTripSpent(trip);
+  saveTrips(trips);
+
+  location.reload();
 }
 
 function renderActivities(tripId) {
@@ -337,7 +383,7 @@ function renderActivities(tripId) {
     return new Date(a) - new Date(b);
   });
 
-  list.innerHTML = sortedDates.map((dateKey, dayIndex) => {
+  list.innerHTML = sortedDates.map((dateKey) => {
     const activities = groupedActivities[dateKey]
       .slice()
       .sort((a, b) => {
@@ -354,7 +400,7 @@ function renderActivities(tripId) {
 
     const dayLabel = dateKey === 'sem-data'
       ? 'Sem data definida'
-      : `DIA ${dayIndex + 1} · ${formatDate(dateKey)}`;
+      : `DIA ${getTripDayNumber(trip.startDate, dateKey)} · ${formatDate(dateKey)}`;
 
     return `
       <section class="activity-day-group">
@@ -374,13 +420,17 @@ function renderActivities(tripId) {
 
                 <div class="activity-list-item__details">
                   <p><strong>Período:</strong> ${activity.period || '-'}</p>
-                  <p><strong>Custo:</strong> €${Number(activity.cost) || 0}</p>
+                  <p><strong>Custo:</strong> €${formatMoney(activity.cost)}</p>
                 </div>
               </div>
 
               <div class="activity-list-item__actions">
                 <button type="button" class="button button--secondary" onclick="editActivity('${tripId}', ${activity.index})">
                   Editar
+                </button>
+
+                <button type="button" class="button button--danger" onclick="deleteActivity('${tripId}', ${activity.index})">
+                  Eliminar
                 </button>
               </div>
             </article>
@@ -392,7 +442,26 @@ function renderActivities(tripId) {
 }
 
 function editActivity(tripId, index) {
+  sessionStorage.setItem('selectedTripId', tripId);
+  sessionStorage.setItem('editActivityIndex', index);
+
   window.location.href = `add-activity.html?id=${tripId}&edit=${index}`;
+}
+
+function deleteActivity(tripId, index) {
+  const confirmed = confirm('Eliminar esta atividade?');
+  if (!confirmed) return;
+
+  const trips = getTrips();
+  const trip = trips.find((t) => String(t.id) === String(tripId));
+
+  if (!trip || !trip.activities) return;
+
+  trip.activities.splice(index, 1);
+  updateTripSpent(trip);
+  saveTrips(trips);
+
+  location.reload();
 }
 
 function renderBudget(tripId) {
@@ -420,16 +489,16 @@ function renderBudget(tripId) {
   const remaining = budget - spent;
 
   budgetList.innerHTML = `
-    <div class="budget-item-row">Budget: <strong>${budget}€</strong></div>
-    <div class="budget-item-row">Voos/Transportes: <strong>${transportTotal}€</strong></div>
-    <div class="budget-item-row">Hotel: <strong>${hotelTotal}€</strong></div>
-    <div class="budget-item-row">Actividades: <strong>${activitiesTotal}€</strong></div>
-    <div class="budget-item-row">Comida: <strong>${expensesTotal}€</strong></div>
+    <div class="budget-item-row">Budget: <strong>${formatMoney(budget)}€</strong></div>
+    <div class="budget-item-row">Voos/Transportes: <strong>${formatMoney(transportTotal)}€</strong></div>
+    <div class="budget-item-row">Hotel: <strong>${formatMoney(hotelTotal)}€</strong></div>
+    <div class="budget-item-row">Actividades: <strong>${formatMoney(activitiesTotal)}€</strong></div>
+    <div class="budget-item-row">Comida: <strong>${formatMoney(expensesTotal)}€</strong></div>
   `;
 
   budgetSummary.innerHTML = `
-    <p>Total Gasto: ${spent}€</p>
-    <p>A gastar: ${remaining}€</p>
+    <p>Total Gasto: ${formatMoney(spent)}€</p>
+    <p>A gastar: ${formatMoney(remaining)}€</p>
   `;
 }
 
@@ -499,7 +568,7 @@ function renderItinerary(tripId) {
           ))
           .map((activity) => `
             <div class="it-entry">
-              ${activity.name || 'Sem nome'} (€${Number(activity.cost) || 0})
+              ${activity.name || 'Sem nome'} (€${formatMoney(activity.cost)})
             </div>
           `);
 
@@ -571,6 +640,41 @@ function getTripDateRange(startDate, endDate) {
   }
 
   return result;
+}
+
+function getTripDayNumber(startDate, currentDate) {
+  if (!startDate || !currentDate) return '-';
+
+  const start = new Date(startDate);
+  const current = new Date(currentDate);
+
+  start.setHours(0, 0, 0, 0);
+  current.setHours(0, 0, 0, 0);
+
+  const diffTime = current - start;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays + 1;
+}
+
+function formatMoney(value) {
+  return (Number(value) || 0).toFixed(2);
+}
+
+function updateTripSpent(trip) {
+  const hotelTotal = (trip.hotels || [])
+    .reduce((sum, hotel) => sum + (Number(hotel.price) || 0), 0);
+
+  const transportTotal = (trip.transports || [])
+    .reduce((sum, transport) => sum + (Number(transport.price) || 0), 0);
+
+  const activitiesTotal = (trip.activities || [])
+    .reduce((sum, activity) => sum + (Number(activity.cost) || 0), 0);
+
+  const expensesTotal = (trip.expenses || [])
+    .reduce((sum, expense) => sum + (Number(expense.cost) || 0), 0);
+
+  trip.spent = hotelTotal + transportTotal + activitiesTotal + expensesTotal;
 }
 
 function formatDateISO(date) {
