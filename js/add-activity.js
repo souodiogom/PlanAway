@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       deleteButton.style.display = 'inline-block';
 
       deleteButton.addEventListener('click', () => {
-        const confirmDelete = confirm('Tens a certeza que queres apagar esta atividade? 🗑️');
+        const confirmDelete = confirm('Tens a certeza que queres apagar esta atividade?');
         if (!confirmDelete) return;
 
         const trips = getTrips();
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!trips[tripIndex].activities || !trips[tripIndex].activities[editIndex]) {
-          showFunnyMessage('Essa atividade já não existe 😅');
+          showFunnyMessage('Essa atividade já não existe.');
           return;
         }
 
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sessionStorage.removeItem('editActivityIndex');
 
-        showFunnyMessage('🗑️ Atividade apagada. Ficou mais leve essa viagem.');
+        showFunnyMessage('🗑️ Atividade apagada.');
 
         setTimeout(() => {
           window.location.href = `activities.html?id=${tripId}`;
@@ -95,12 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const cost = rawCost === '' ? 0 : Number(rawCost);
 
     if (!name || !type || !period) {
-      showFunnyMessage('Ei viajante 😅 ainda faltam alguns campos obrigatórios.');
+      showFunnyMessage('Ainda faltam alguns campos obrigatórios.');
       return;
     }
 
     if (rawCost !== '' && Number.isNaN(cost)) {
-      showFunnyMessage('Esse custo está meio turista perdido 😬 mete um número válido.');
+      showFunnyMessage('Introduz um número válido.');
       return;
     }
 
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tripIndex = trips.findIndex((trip) => String(trip.id) === String(tripId));
 
     if (tripIndex === -1) {
-      showFunnyMessage('Ups... não encontrei essa viagem 👀');
+      showFunnyMessage('Ups... Viagem não encontrada');
       return;
     }
 
@@ -132,14 +132,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       sessionStorage.removeItem('editActivityIndex');
 
-      showFunnyMessage('✏️ Atividade atualizada! Ficou mesmo no ponto.');
+      showFunnyMessage('✏️ Atividade atualizada!');
     } else {
       trips[tripIndex].activities.push(activityData);
 
       updateTripSpent(trips[tripIndex]);
       saveTrips(trips);
 
-      showFunnyMessage('✈️ Atividade guardada! Mais uma aventura no mapa.');
+      showFunnyMessage('✈️ Atividade guardada!');
     }
 
     setTimeout(() => {

@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tripIndex = trips.findIndex((trip) => String(trip.id) === String(tripId));
 
         if (tripIndex === -1) {
-          showHotelMessage('Ups... não encontrei essa viagem 👀');
+          showHotelMessage('Ups... Viagem não encontrada.');
           return;
         }
 
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const price = rawPrice === '' ? 0 : Number(rawPrice);
 
     if (!name || !date || !hotelNightsEl.value.trim()) {
-      showHotelMessage('Ei viajante 😅 ainda faltam alguns campos obrigatórios.');
+      showHotelMessage('Ainda faltam alguns campos obrigatórios.');
       return;
     }
 
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (rawPrice !== '' && Number.isNaN(price)) {
-      showHotelMessage('Esse valor do alojamento não parece válido 😬');
+      showHotelMessage('Esse valor do alojamento é válido.');
       return;
     }
 
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tripIndex = trips.findIndex((trip) => String(trip.id) === String(tripId));
 
     if (tripIndex === -1) {
-      showHotelMessage('Ups... não encontrei essa viagem 👀');
+      showHotelMessage('Ups... Viagem não encontada.');
       return;
     }
 

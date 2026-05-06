@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sessionStorage.removeItem('editTransportIndex');
 
-        showTransportMessage('🗑️ Transporte apagado com sucesso.');
+        showTransportMessage('🗑️ Transporte apagado.');
 
         setTimeout(() => {
           window.location.href = `transports.html?id=${tripId}`;
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const price = rawPrice === '' ? 0 : Number(rawPrice);
 
     if (!type || !date || !period) {
-      showTransportMessage('Ei viajante 😅 ainda faltam alguns campos obrigatórios.');
+      showTransportMessage('Ainda faltam alguns campos obrigatórios.');
       return;
     }
 
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (rawPrice !== '' && Number.isNaN(price)) {
-      showTransportMessage('Esse valor do transporte não parece válido 😬');
+      showTransportMessage('Esse valor do transporte não é válido.');
       return;
     }
 
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tripIndex = trips.findIndex((trip) => String(trip.id) === String(tripId));
 
     if (tripIndex === -1) {
-      showTransportMessage('Ups... não encontrei essa viagem 👀');
+      showTransportMessage('Ups... Viagem não encontrada.');
       return;
     }
 
@@ -142,14 +142,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       sessionStorage.removeItem('editTransportIndex');
 
-      showTransportMessage('✏️ Transporte atualizado com sucesso.');
+      showTransportMessage('✏️ Transporte atualizado.');
     } else {
       trips[tripIndex].transports.push(transportData);
 
       updateTripSpent(trips[tripIndex]);
       saveTrips(trips);
 
-      showTransportMessage('🚍 Transporte guardado com sucesso.');
+      showTransportMessage('🚍 Transporte guardado.');
     }
 
     setTimeout(() => {

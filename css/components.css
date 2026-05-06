@@ -112,7 +112,7 @@
 
 .logo-plane {
   display: inline-block;
-  transform: rotate(90deg); /* avião para baixo ↓ */
+  transform: rotate(90deg); /*avião para baixo*/
   margin-left: 6px;
 }
 
